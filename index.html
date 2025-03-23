@@ -58,6 +58,7 @@
         .links a {
             color: #0f0;
             text-decoration: none;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -73,8 +74,8 @@
                 <input type="password" id="loginPassword" placeholder="Password" required>
             </div>
             <div class="links">
-                <a href="#" onclick="showForgotPassword()">Forgot Password?</a>
-                <a href="#" onclick="showRegister()">Register</a>
+                <a onclick="showForgotPassword()">Forgot Password?</a>
+                <a onclick="showRegister()">Register</a>
             </div>
             <div class="inputBox">
                 <input type="submit" value="Login">
@@ -95,7 +96,7 @@
             <div class="inputBox">
                 <input type="submit" value="Register">
             </div>
-            <a href="#" onclick="showLogin()">Back to Login</a>
+            <a onclick="showLogin()">Back to Login</a>
         </form>
     </div>
     
@@ -109,9 +110,28 @@
             <div class="inputBox">
                 <input type="submit" value="Reset Password">
             </div>
-            <a href="#" onclick="showLogin()">Back to Login</a>
+            <a onclick="showLogin()">Back to Login</a>
         </form>
     </div>
+
+    <!-- Show/Hide Forms Script (Placed Above Firebase Script) -->
+    <script>
+        function showRegister() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'block';
+            document.getElementById('forgotContainer').style.display = 'none';
+        }
+        function showForgotPassword() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('forgotContainer').style.display = 'block';
+        }
+        function showLogin() {
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('forgotContainer').style.display = 'none';
+        }
+    </script>
 
     <!-- Firebase Authentication Script -->
     <script type="module">
@@ -155,7 +175,7 @@
             signInWithEmailAndPassword(auth, email, password)
                 .then(() => {
                     alert("Login successful!");
-                    window.location.href = "https://royalofillegal-onion.github.io/royalofillegal.org"; // Redirect to dashboard
+                    window.location.href = "dashboard.html"; // Redirect to dashboard
                 })
                 .catch((error) => {
                     alert(error.message);
@@ -174,25 +194,7 @@
                     alert(error.message);
                 });
         });
-
-        // Show/Hide Forms
-        function showRegister() {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('registerContainer').style.display = 'block';
-            document.getElementById('forgotContainer').style.display = 'none';
-        }
-        function showForgotPassword() {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('registerContainer').style.display = 'none';
-            document.getElementById('forgotContainer').style.display = 'block';
-        }
-        function showLogin() {
-            document.getElementById('loginContainer').style.display = 'block';
-            document.getElementById('registerContainer').style.display = 'none';
-            document.getElementById('forgotContainer').style.display = 'none';
-        }
     </script>
 </body>
 </html>
-
 
