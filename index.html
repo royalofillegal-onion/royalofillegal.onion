@@ -80,21 +80,23 @@
         }
     </script>
     <script>
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('loginUsername').value;
     const password = document.getElementById('loginPassword').value;
 
     try {
-        await signInWithEmailAndPassword(auth, email, password);
-        window.location.replace("https://royalofillegal.github.io/royalofillegal.org/"); // Ensures redirect without history entry
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        if (userCredential.user) {  
+            window.location.href = "https://royalofillegal-onion.github.io/royalofillegal.org/"; // Redirects without alert
+        }
     } catch (error) {
-        alert("Login failed: " + error.message); // Show error alert only on failure
+        alert("Login failed: " + error.message); // Show alert only on failure
     }
 });
 
     </script>
-    <script>
+    <script
         document.addEventListener('contextmenu', (event) => event.preventDefault());
         document.addEventListener('keydown', (event) => {
             if (event.key === 'F12' || (event.ctrlKey && event.shiftKey && event.key === 'I')) {
