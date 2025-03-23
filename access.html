@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royalstar Portal</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+        }
+        .warning {
+            color: red;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        marquee {
+            font-size: 18px;
+            font-weight: bold;
+            color: yellow;
+            margin: 10px 0;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            alert("Warning: This site is under process. Please visit later!");
+        };
+    </script>
+     <script>
+          document.addEventListener('contextmenu', (event) => event.preventDefault());
+          document.addEventListener('keydown', (event) => {
+            if (event.key === 'F12' || (event.ctrlKey && event.shiftKey && event.key === 'I')) {
+                event.preventDefault();
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Welcome to the Royalstar Portal</h1>
+    <marquee behavior="scroll" direction="left">⚠️ WARNING: This site is still under development. Please visit later! ⚠️</marquee>
+    <marquee behavior="alternate">🚧 Site Under Maintenance! 🚧</marquee>
+    <marquee behavior="scroll" direction="right">🔧 Upgrades in Progress! 🔧</marquee>
+    <p class="warning">Heavy traffic detected. Some features may not work properly.</p>
+    <footer>
+        <p>&copy; 2025 Royal_of_illegal. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
