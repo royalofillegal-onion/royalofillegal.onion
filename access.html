@@ -37,19 +37,7 @@
             }
         });
     </script>
-   <script>
-        // Check if the user is logged in
-        document.addEventListener("DOMContentLoaded", function() {
-            if (localStorage.getItem("isLoggedIn") !== "true") {
-                window.location.href = "index.html"; // Redirect to login
-            }
-        });
-
-        function logout() {
-            localStorage.removeItem("isLoggedIn"); // Remove login status
-            window.location.href = "index.html"; // Redirect to login
-        }
-    </script>
+  
 
 </head>
 <body>
