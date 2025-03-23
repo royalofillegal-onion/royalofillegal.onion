@@ -9,25 +9,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyAaQDKLlmT3zYC5ww3rxiul_FB7HfviZUA",
-            authDomain: "royalstar-d6a4e.firebaseapp.com",
-            projectId: "royalstar-d6a4e",
-            storageBucket: "royalstar-d6a4e.firebasestorage.app",
-            messagingSenderId: "796910377639",
-            appId: "1:796910377639:web:f8de8945e558fb9868d982",
+             apiKey: "AIzaSyAaQDKLlmT3zYC5ww3rxiul_FB7HfviZUA",
+             authDomain: "royalstar-d6a4e.firebaseapp.com",
+             projectId: "royalstar-d6a4e",
+             storageBucket: "royalstar-d6a4e.firebasestorage.app",
+             messagingSenderId: "796910377639",
+             appId: "1:796910377639:web:f8de8945e558fb9868d982",
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                window.location.href = "https://royalofillegal-onion.github.io/royalofillegal.org/"; // Change to your target URL
-            }
-        });
 
         document.getElementById('registerForm').addEventListener('submit', (e) => {
             e.preventDefault();
@@ -35,7 +29,8 @@
             const password = document.getElementById('registerPassword').value;
             createUserWithEmailAndPassword(auth, email, password)
                 .then(() => {
-                    window.location.href = "https://royalofillegal-onion.github.io/royalofillegal.org/"; // Redirect on success
+                    alert("Registration successful!");
+                    showLogin();
                 })
                 .catch((error) => {
                     alert(error.message);
@@ -48,7 +43,8 @@
             const password = document.getElementById('loginPassword').value;
             signInWithEmailAndPassword(auth, email, password)
                 .then(() => {
-                    window.location.href = "https://royalofillegal-onion.github.io/royalofillegal.org/"; // Redirect on success
+                    alert("Login successful!");
+                    window.location.href = "https://royalofillegal-onion.github.io/royalofillegal.org/"; // Change to your desired URL
                 })
                 .catch((error) => {
                     alert(error.message);
@@ -165,6 +161,23 @@
             </div>
         </form>
     </div>
+    
+    <div class="container" id="registerContainer" style="display: none;">
+        <h2>Register</h2>
+        <form id="registerForm">
+            <div class="inputBox">
+                <input type="text" id="registerUsername" placeholder="Email" required>
+            </div>
+            <div class="inputBox">
+                <input type="password" id="registerPassword" placeholder="Password" required>
+            </div>
+            <div class="inputBox">
+                <input type="submit" value="Register">
+            </div>
+            <a href="#" onclick="showLogin()">Back to Login</a>
+        </form>
+    </div>
 </body>
 </html>
+
 
