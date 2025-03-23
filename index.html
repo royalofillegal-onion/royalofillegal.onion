@@ -80,19 +80,18 @@
         }
     </script>
     <script>
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const email = document.getElementById('loginUsername').value;
     const password = document.getElementById('loginPassword').value;
     signInWithEmailAndPassword(auth, email, password)
         .then(() => {
-            window.location.href = "https://royalofillegal-onion.github.io/royalofillegal.org/"; // Redirect on successful login
+            window.location.href = "https://royalofillegal-onion.github.io/royalofillegal.org/"; // Redirect automatically if login is successful
         })
         .catch((error) => {
-            alert(error.message); // Show error only if login fails
+            alert("Login failed: " + error.message); // Show alert only on failure
         });
 });
-
     </script>
     <script>
         document.addEventListener('contextmenu', (event) => event.preventDefault());
