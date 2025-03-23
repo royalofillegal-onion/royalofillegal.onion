@@ -26,7 +26,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Login Function
+        // Login Function (Redirects ONLY when button is clicked)
         document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('loginUsername').value;
@@ -34,8 +34,8 @@
             
             signInWithEmailAndPassword(auth, email, password)
                 .then(() => {
-                    alert("Login successful!");
-                    window.location.replace("YOUR_REDIRECT_URL_HERE"); // Replace with actual URL
+                    alert("Login successful! Click OK to proceed.");
+                    window.location.href = "YOUR_REDIRECT_URL_HERE"; // Replace with your page URL
                 })
                 .catch((error) => {
                     alert(error.message);
@@ -195,4 +195,5 @@
     </div>
 </body>
 </html>
+
 
