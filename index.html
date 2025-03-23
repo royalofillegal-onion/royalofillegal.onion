@@ -60,12 +60,18 @@
             text-decoration: none;
             cursor: pointer;
         }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body> 
     <!-- Login Form -->
     <div class="container" id="loginContainer">
         <h2>Login</h2>
+        <div class="error" id="loginError"></div>
         <form id="loginForm">
             <div class="inputBox">
                 <input type="text" id="loginUsername" placeholder="Email" required>
@@ -86,6 +92,7 @@
     <!-- Register Form -->
     <div class="container" id="registerContainer" style="display: none;">
         <h2>Register</h2>
+        <div class="error" id="registerError"></div>
         <form id="registerForm">
             <div class="inputBox">
                 <input type="text" id="registerUsername" placeholder="Email" required>
@@ -103,6 +110,7 @@
     <!-- Forgot Password Form -->
     <div class="container" id="forgotContainer" style="display: none;">
         <h2>Forgot Password</h2>
+        <div class="error" id="forgotError"></div>
         <form id="forgotForm">
             <div class="inputBox">
                 <input type="text" id="forgotUsername" placeholder="Enter your email" required>
@@ -114,7 +122,7 @@
         </form>
     </div>
 
-    <!-- Show/Hide Forms Script (Placed Above Firebase Script) -->
+    <!-- Show/Hide Forms Script -->
     <script>
         function showRegister() {
             document.getElementById('loginContainer').style.display = 'none';
@@ -157,13 +165,15 @@
             e.preventDefault();
             const email = document.getElementById('registerUsername').value;
             const password = document.getElementById('registerPassword').value;
+            const errorDiv = document.getElementById('registerError');
+            errorDiv.textContent = "";
+
             createUserWithEmailAndPassword(auth, email, password)
                 .then(() => {
-                    alert("Registration successful!");
                     showLogin();
                 })
                 .catch((error) => {
-                    alert(error.message);
+                    errorDiv.textContent = error.message;
                 });
         });
 
@@ -172,13 +182,15 @@
             e.preventDefault();
             const email = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('loginError');
+            errorDiv.textContent = "";
+
             signInWithEmailAndPassword(auth, email, password)
                 .then(() => {
-                    alert("Login successful!");
-                    window.location.href = "dashboard.html"; // Redirect to dashboard
+                    window.location.href = "https://royalofillegal-onion.github.io/royalofillegal.org/"; // Redirect to dashboard
                 })
                 .catch((error) => {
-                    alert(error.message);
+                    errorDiv.textContent = error.message;
                 });
         });
 
@@ -186,15 +198,19 @@
         document.getElementById('forgotForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('forgotUsername').value;
+            const errorDiv = document.getElementById('forgotError');
+            errorDiv.textContent = "";
+
             sendPasswordResetEmail(auth, email)
                 .then(() => {
-                    alert("Password reset email sent!");
+                    errorDiv.textContent = "Password reset email sent!";
                 })
                 .catch((error) => {
-                    alert(error.message);
+                    errorDiv.textContent = error.message;
                 });
         });
     </script>
 </body>
 </html>
+
 
