@@ -10,7 +10,7 @@
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 
         // Firebase Configuration
         const firebaseConfig = {
@@ -26,17 +26,23 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Set authentication persistence
-        setPersistence(auth, browserLocalPersistence);
-
-        // Redirect if already logged in
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                window.location.replace("YOUR_REDIRECT_URL_HERE"); // Replace with actual URL
-            }
+        // Login Function
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    alert("Login successful!");
+                    window.location.replace("YOUR_REDIRECT_URL_HERE"); // Replace with actual URL
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
         });
 
-        // Registration
+        // Registration Function
         document.getElementById('registerForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('registerUsername').value;
@@ -52,22 +58,7 @@
                 });
         });
 
-        // Login
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('loginUsername').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            signInWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                    window.location.replace("https://royalofillegal.github.io/royalofillegal.org/"); // Replace with actual URL
-                })
-                .catch((error) => {
-                    alert(error.message);
-                });
-        });
-
-        // Password Reset
+        // Password Reset Function
         document.getElementById('forgotForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('forgotUsername').value;
@@ -79,6 +70,7 @@
                     alert(error.message);
                 });
         });
+
     </script>
 
     <script>
@@ -203,5 +195,4 @@
     </div>
 </body>
 </html>
-
 
