@@ -78,6 +78,12 @@
             document.getElementById('registerContainer').style.display = 'none';
             document.getElementById('forgotContainer').style.display = 'none';
         }
+        document.addEventListener('contextmenu', (event) => event.preventDefault());
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'F12' || (event.ctrlKey && event.shiftKey && event.key === 'I')) {
+                event.preventDefault();
+            }
+        });
     </script>
     <style>
         * {
@@ -183,3 +189,185 @@
     </div>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+
+        const firebaseConfig = {
+             apiKey: "AIzaSyAaQDKLlmT3zYC5ww3rxiul_FB7HfviZUA",
+             authDomain: "royalstar-d6a4e.firebaseapp.com",
+             projectId: "royalstar-d6a4e",
+             storageBucket: "royalstar-d6a4e.firebasestorage.app",
+             messagingSenderId: "796910377639",
+             appId: "1:796910377639:web:f8de8945e558fb9868d982",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        document.getElementById('registerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            createUserWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    alert("Registration successful!");
+                    showLogin();
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    alert("Login successful!");
+                    window.location.href = "https://your-redirect-url.com"; // Change to your desired URL
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
+        });
+
+        document.getElementById('forgotForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('forgotUsername').value;
+            sendPasswordResetEmail(auth, email)
+                .then(() => {
+                    alert("Password reset email sent!");
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
+        });
+    </script>
+    <script>
+        function showRegister() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'block';
+            document.getElementById('forgotContainer').style.display = 'none';
+        }
+        function showForgotPassword() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('forgotContainer').style.display = 'block';
+        }
+        function showLogin() {
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('forgotContainer').style.display = 'none';
+        }
+    </script>
+    <script>
+          document.addEventListener('contextmenu', (event) => event.preventDefault());
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'F12' || (event.ctrlKey && event.shiftKey && event.key === 'I')) {
+                event.preventDefault();
+            }
+        });
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #000;
+        }
+        .container {
+            width: 400px;
+            background: #222;
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
+            text-align: center;
+        }
+        h2 {
+            color: #0f0;
+            margin-bottom: 20px;
+        }
+        .inputBox {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .inputBox input {
+            width: 100%;
+            padding: 10px;
+            background: #333;
+            border: none;
+            color: #fff;
+            border-radius: 4px;
+        }
+        .inputBox input[type="submit"] {
+            background: #0f0;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .links {
+            display: flex;
+            justify-content: space-between;
+        }
+        .links a {
+            color: #0f0;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="loginContainer">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <div class="inputBox">
+                <input type="text" id="loginUsername" placeholder="Email" required>
+            </div>
+            <div class="inputBox">
+                <input type="password" id="loginPassword" placeholder="Password" required>
+            </div>
+            <div class="links">
+                <a href="#" onclick="showForgotPassword()">Forgot Password?</a>
+                <a href="#" onclick="showRegister()">Register</a>
+            </div>
+            <div class="inputBox">
+                <input type="submit" value="Login">
+            </div>
+        </form>
+    </div>
+    
+    <div class="container" id="registerContainer" style="display: none;">
+        <h2>Register</h2>
+        <form id="registerForm">
+            <div class="inputBox">
+                <input type="text" id="registerUsername" placeholder="Email" required>
+            </div>
+            <div class="inputBox">
+                <input type="password" id="registerPassword" placeholder="Password" required>
+            </div>
+            <div class="inputBox">
+                <input type="submit" value="Register">
+            </div>
+            <a href="#" onclick="showLogin()">Back to Login</a>
+        </form>
+    </div>
+</body>
+</html>
+
