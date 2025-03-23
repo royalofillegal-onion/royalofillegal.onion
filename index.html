@@ -79,6 +79,29 @@
             document.getElementById('forgotContainer').style.display = 'none';
         }
     </script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+    signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+            window.location.href = "https://royalofillegal-onion.github.io/royalofillegal.org/"; // Redirect on successful login
+        })
+        .catch((error) => {
+            alert(error.message); // Show error only if login fails
+        });
+});
+
+    </script>
+    <script>
+        document.addEventListener('contextmenu', (event) => event.preventDefault());
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'F12' || (event.ctrlKey && event.shiftKey && event.key === 'I')) {
+                event.preventDefault();
+            }
+        });
+    </script>
     <style>
         * {
             margin: 0;
