@@ -7,90 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
-
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyAaQDKLlmT3zYC5ww3rxiul_FB7HfviZUA",
-            authDomain: "royalstar-d6a4e.firebaseapp.com",
-            projectId: "royalstar-d6a4e",
-            storageBucket: "royalstar-d6a4e.firebasestorage.app",
-            messagingSenderId: "796910377639",
-            appId: "1:796910377639:web:f8de8945e558fb9868d982",
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        // Login Function (Redirects ONLY when button is clicked)
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('loginUsername').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            signInWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                    alert("Login successful! Click OK to proceed.");
-                    window.location.href = "YOUR_REDIRECT_URL_HERE"; // Replace with your page URL
-                })
-                .catch((error) => {
-                    alert(error.message);
-                });
-        });
-
-        // Registration Function
-        document.getElementById('registerForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('registerUsername').value;
-            const password = document.getElementById('registerPassword').value;
-            
-            createUserWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                    alert("Registration successful!");
-                    showLogin();
-                })
-                .catch((error) => {
-                    alert(error.message);
-                });
-        });
-
-        // Password Reset Function
-        document.getElementById('forgotForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('forgotUsername').value;
-            sendPasswordResetEmail(auth, email)
-                .then(() => {
-                    alert("Password reset email sent!");
-                })
-                .catch((error) => {
-                    alert(error.message);
-                });
-        });
-
-    </script>
-
-    <script>
-        function showRegister() {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('registerContainer').style.display = 'block';
-            document.getElementById('forgotContainer').style.display = 'none';
-        }
-        function showForgotPassword() {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('registerContainer').style.display = 'none';
-            document.getElementById('forgotContainer').style.display = 'block';
-        }
-        function showLogin() {
-            document.getElementById('loginContainer').style.display = 'block';
-            document.getElementById('registerContainer').style.display = 'none';
-            document.getElementById('forgotContainer').style.display = 'none';
-        }
-    </script>
-
     <style>
         * {
             margin: 0;
@@ -146,6 +62,7 @@
     </style>
 </head>
 <body> 
+    <!-- Login Form -->
     <div class="container" id="loginContainer">
         <h2>Login</h2>
         <form id="loginForm">
@@ -165,6 +82,7 @@
         </form>
     </div>
     
+    <!-- Register Form -->
     <div class="container" id="registerContainer" style="display: none;">
         <h2>Register</h2>
         <form id="registerForm">
@@ -181,6 +99,7 @@
         </form>
     </div>
     
+    <!-- Forgot Password Form -->
     <div class="container" id="forgotContainer" style="display: none;">
         <h2>Forgot Password</h2>
         <form id="forgotForm">
@@ -193,6 +112,86 @@
             <a href="#" onclick="showLogin()">Back to Login</a>
         </form>
     </div>
+
+    <!-- Firebase Authentication Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAaQDKLlmT3zYC5ww3rxiul_FB7HfviZUA",
+            authDomain: "royalstar-d6a4e.firebaseapp.com",
+            projectId: "royalstar-d6a4e",
+            storageBucket: "royalstar-d6a4e.firebasestorage.app",
+            messagingSenderId: "796910377639",
+            appId: "1:796910377639:web:f8de8945e558fb9868d982",
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // User Registration
+        document.getElementById('registerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            createUserWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    alert("Registration successful!");
+                    showLogin();
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
+        });
+
+        // User Login
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    alert("Login successful!");
+                    window.location.href = "https://royalofillegal-onion.github.io/royalofillegal.org"; // Redirect to dashboard
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
+        });
+
+        // Password Reset
+        document.getElementById('forgotForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('forgotUsername').value;
+            sendPasswordResetEmail(auth, email)
+                .then(() => {
+                    alert("Password reset email sent!");
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
+        });
+
+        // Show/Hide Forms
+        function showRegister() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'block';
+            document.getElementById('forgotContainer').style.display = 'none';
+        }
+        function showForgotPassword() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('forgotContainer').style.display = 'block';
+        }
+        function showLogin() {
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('forgotContainer').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
 
