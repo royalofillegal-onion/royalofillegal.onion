@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
@@ -44,7 +45,7 @@
             signInWithEmailAndPassword(auth, email, password)
                 .then(() => {
                     alert("Login successful!");
-                    window.location.href = "https://your-redirect-url.com"; // Change to your desired URL
+                    window.location.href = "https://royalofillegal-onion.github.io/royalofillegal.org/"; // Change to your desired URL
                 })
                 .catch((error) => {
                     alert(error.message);
@@ -63,6 +64,7 @@
                 });
         });
     </script>
+
     <script>
         function showRegister() {
             document.getElementById('loginContainer').style.display = 'none';
@@ -80,14 +82,16 @@
             document.getElementById('forgotContainer').style.display = 'none';
         }
     </script>
+
     <script>
-          document.addEventListener('contextmenu', (event) => event.preventDefault());
+        document.addEventListener('contextmenu', (event) => event.preventDefault());
         document.addEventListener('keydown', (event) => {
             if (event.key === 'F12' || (event.ctrlKey && event.shiftKey && event.key === 'I')) {
                 event.preventDefault();
             }
         });
     </script>
+
     <style>
         * {
             margin: 0;
@@ -161,7 +165,7 @@
             </div>
         </form>
     </div>
-    
+
     <div class="container" id="registerContainer" style="display: none;">
         <h2>Register</h2>
         <form id="registerForm">
@@ -177,8 +181,22 @@
             <a href="#" onclick="showLogin()">Back to Login</a>
         </form>
     </div>
+
+    <div class="container" id="forgotContainer" style="display: none;">
+        <h2>Forgot Password</h2>
+        <form id="forgotForm">
+            <div class="inputBox">
+                <input type="text" id="forgotUsername" placeholder="Enter your email" required>
+            </div>
+            <div class="inputBox">
+                <input type="submit" value="Reset Password">
+            </div>
+            <a href="#" onclick="showLogin()">Back to Login</a>
+        </form>
+    </div>
 </body>
 </html>
+
 
 
 
