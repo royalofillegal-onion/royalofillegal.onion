@@ -37,6 +37,17 @@
             }
         });
     </script>
+    <script>
+        // Check if the user is logged in
+        if (!localStorage.getItem("isLoggedIn")) {
+            window.location.href = "index.html"; // Redirect to login
+        }
+
+        function logout() {
+            localStorage.removeItem("isLoggedIn"); // Remove login status
+            window.location.href = "index.html"; // Redirect to login
+        }
+    </script>
 </head>
 <body>
     <h1>Welcome to the Royalstar Portal</h1>
