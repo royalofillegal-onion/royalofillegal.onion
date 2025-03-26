@@ -3,173 +3,359 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <title>Music Web App</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
-        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #000; }
-        .container { width: 400px; background: #222; padding: 40px; border-radius: 4px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9); text-align: center; }
-        h2 { color: #0f0; margin-bottom: 20px; }
-        .inputBox { position: relative; margin-bottom: 20px; }
-        .inputBox input { width: 100%; padding: 10px; background: #333; border: none; color: #fff; border-radius: 4px; }
-        .inputBox input[type="submit"] { background: #0f0; color: #000; font-weight: bold; cursor: pointer; }
-        .links { display: flex; justify-content: space-between; }
-        .links a { color: #0f0; text-decoration: none; cursor: pointer; }
-        .error { color: red; font-size: 14px; margin-bottom: 10px; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #121212;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .menu {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 200px;
+            height: 100%;
+            background: purple;
+            padding: 20px;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        .menu-logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .menu-logo img {
+            width: 80px;
+            height: auto;
+        }
+        .menu-logo h2 {
+            margin: 10px 0 0;
+            font-size: 18px;
+        }
+        .menu-item {
+            padding: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .menu-item:hover {
+            background: #800080;
+        }
+        .main-content {
+            margin-left: 220px;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+        }
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            background: purple;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 1001;
+        }
+        .search-bar {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+        .search-input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 25px;
+            border: none;
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .search-input:hover, .search-input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(29, 185, 84, 0.3);
+        }
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            width: 100%;
+            background: rgba(25, 20, 20, 0.95);
+            border-radius: 15px;
+            margin-top: 10px;
+            display: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        .suggestion {
+            padding: 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .suggestion:last-child {
+            border-bottom: none;
+        }
+        .suggestion:hover {
+            background: rgba(29, 185, 84, 0.2);
+        }
+        .suggestion div {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .suggestion small {
+            color: #888;
+        }
+        .song-info {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .progress-bar {
+            width: 100%;
+            max-width: 400px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 20px auto;
+            border-radius: 3px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .progress {
+            width: 0;
+            height: 100%;
+            background: #1db954;
+            transition: width 0.1s linear;
+        }
+        .time-display {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #888;
+        }
+        #lyrics {
+            margin-top: 30px;
+            line-height: 1.6;
+            white-space: pre-line;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        .feeback{
+            background: purple;
+            color: black;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 1001;
+        }
+        @media (max-width: 768px) {
+            .menu {
+                transform: translateX(-100%);
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 60px 20px 20px;
+            }
+            .search-bar {
+                max-width: 90%;
+            }
+        }
     </style>
 </head>
-<body> 
-
-    <!-- Login Form -->
-    <div class="container" id="loginContainer">
-        <h2>Login</h2>
-        <div class="error" id="loginError"></div>
-        <form id="loginForm">
-            <div class="inputBox">
-                <input type="text" id="loginUsername" placeholder="Email" required>
-            </div>
-            <div class="inputBox">
-                <input type="password" id="loginPassword" placeholder="Password" required>
-            </div>
-            <div class="links">
-                <a href="javascript:void(0);" onclick="showForgotPassword()">Forgot Password?</a>
-                <a href="javascript:void(0);" onclick="showRegister()">Register</a>
-            </div>
-            <div class="inputBox">
-                <input type="submit" value="Login">
-            </div>
-        </form>
+<body>
+       <marquee>THIS SITE HAS SO MANY ERRORS ON BACKEND⚠️</marquee>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <div class="menu" id="sideMenu">
+        <div class="menu-logo">
+            <img src="https://res.cloudinary.com/dl8dmkhmv/image/upload/v1720065209/IMG_20240515_080836_nr89j0.jpg" alt="App Logo">
+            <h2>ROYALSTAR Music</h2>
+        </div>
+        <div class="menu-item">Home</div>
+        <div class="menu-item">Playlists</div>
+        <div class="menu-item">Genres</div>
+        <div class="menu-item">Favorites</div>
     </div>
     
-    <!-- Register Form -->
-    <div class="container" id="registerContainer" style="display: none;">
-        <h2>Register</h2>
-        <div class="error" id="registerError"></div>
-        <form id="registerForm">
-            <div class="inputBox">
-                <input type="text" id="registerUsername" placeholder="Email" required>
+    <div class="main-content">
+        <div class="search-bar">
+            <input type="text" id="search" class="search-input" placeholder="Search for songs...">
+            <div class="search-suggestions" id="suggestions"></div>
+        </div>
+   <marquee>THIS SITE HAS SO MANY ERRORS ON BACKEND⚠️</marquee>
+        <div class="song-info">
+            <h3 id="song-title">Select a song to play</h3>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
             </div>
-            <div class="inputBox">
-                <input type="password" id="registerPassword" placeholder="Password" required>
+            <div class="time-display">
+                <span id="current-time">0:00</span> / <span id="total-time">0:00</span>
             </div>
-            <div class="inputBox">
-                <input type="submit" value="Register">
-            </div>
-            <a href="javascript:void(0);" onclick="showLogin()">Back to Login</a>
-        </form>
+            <p id="lyrics">Lyrics will appear here...</p>
+        </div>
     </div>
-    
-    <!-- Forgot Password Form -->
-    <div class="container" id="forgotContainer" style="display: none;">
-        <h2>Forgot Password</h2>
-        <div class="error" id="forgotError"></div>
-        <form id="forgotForm">
-            <div class="inputBox">
-                <input type="text" id="forgotUsername" placeholder="Enter your email" required>
-            </div>
-            <div class="inputBox">
-                <input type="submit" value="Reset Password">
-            </div>
-            <a href="javascript:void(0);" onclick="showLogin()">Back to Login</a>
-        </form>
-    </div>
-
-    <!-- Show/Hide Forms Script -->
+    <a href="conatact.html"><button class="feeback">FEEBACKDBACK</button></a>
+    <P>THE SITE ERROR FEEBACKDBACK WHAT IT</P>
+    <marquee>THIS SITE HAS SO MANY ERRORS ON BACKEND⚠️</marquee>
     <script>
-        function showRegister() {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('registerContainer').style.display = 'block';
-            document.getElementById('forgotContainer').style.display = 'none';
-        }
-        function showForgotPassword() {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('registerContainer').style.display = 'none';
-            document.getElementById('forgotContainer').style.display = 'block';
-        }
-        function showLogin() {
-            document.getElementById('loginContainer').style.display = 'block';
-            document.getElementById('registerContainer').style.display = 'none';
-            document.getElementById('forgotContainer').style.display = 'none';
-        }
-    </script>
+        // Spotify API Configuration
+        const clientId = '8d1d77b8f7eb488eba107cbb6def0ba7';
+        const clientSecret = '2d11f684c1d34fd8a9f2860a236a3aaf';
+        let accessToken = 'BQCb4wKS0uRqrCnwNue4IRTxTMNI2qF2_JXYnU1GPm1sdKUiNwkM8UsdBmCe1f1LLkQ_icl-JBQ5mqt6fXXfWIEl0ZNeSCsPJhLxegVK7ASo1zaB9zbvgriw7qvyzoKqWwCJ9X2kk9U';
 
-    <!-- Firebase Authentication Script -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
-
-        // Firebase Config
-        const firebaseConfig = {
-            apiKey: "AIzaSyAaQDKLlmT3zYC5ww3rxiul_FB7HfviZUA",
-            authDomain: "royalstar-d6a4e.firebaseapp.com",
-            projectId: "royalstar-d6a4e",
-            storageBucket: "royalstar-d6a4e.firebasestorage.app",
-            messagingSenderId: "796910377639",
-            appId: "1:796910377639:web:f8de8945e558fb9868d982",
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        // Keep User Logged In
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                window.location.href = "access.html"; // Redirect if already logged in
+        // Get Spotify Access Token
+        async function getSpotifyToken() {
+            try {
+                const response = await fetch('https://accounts.spotify.com/api/token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret)
+                    },
+                    body: 'grant_type=client_credentials'
+                });
+                const data = await response.json();
+                accessToken = data.access_token;
+            } catch (error) {
+                console.error('Error getting Spotify token:', error);
             }
-        });
+        }
 
-        // User Registration
-        document.getElementById('registerForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('registerUsername').value;
-            const password = document.getElementById('registerPassword').value;
-            const errorDiv = document.getElementById('registerError');
-            errorDiv.textContent = "";
+        // Initialize token when page loads
+        getSpotifyToken();
 
-            createUserWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                    window.location.href = "access.html"; // Redirect
-                })
-                .catch((error) => {
-                    errorDiv.textContent = error.message;
-                });
-        });
+        // Menu toggle function
+        function toggleMenu() {
+            const menu = document.getElementById('sideMenu');
+            if (menu.style.transform === 'translateX(0px)') {
+                menu.style.transform = 'translateX(-100%)';
+            } else {
+                menu.style.transform = 'translateX(0px)';
+            }
+        }
 
-        // User Login
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('loginUsername').value;
-            const password = document.getElementById('loginPassword').value;
-            const errorDiv = document.getElementById('loginError');
-            errorDiv.textContent = "";
+        // Play song function
+        function playSong(songId, title, duration) {
+            document.getElementById('song-title').innerText = title;
+            document.getElementById('total-time').innerText = formatTime(duration);
+            let progress = document.getElementById('progress');
+            let currentTimeDisplay = document.getElementById('current-time');
+            progress.style.width = '0%';
+            let elapsedTime = 0;
+            
+            // Clear any existing interval
+            if (window.playInterval) clearInterval(window.playInterval);
+            
+            window.playInterval = setInterval(() => {
+                if (elapsedTime < duration) {
+                    elapsedTime++;
+                    progress.style.width = (elapsedTime / duration) * 100 + '%';
+                    currentTimeDisplay.innerText = formatTime(elapsedTime);
+                } else {
+                    clearInterval(window.playInterval);
+                }
+            }, 1000);
+        }
 
-            signInWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                    window.location.href = "access.html"; // Redirect
-                })
-                .catch((error) => {
-                    errorDiv.textContent = error.message;
-                });
-        });
+        // Format time function
+        function formatTime(seconds) {
+            let min = Math.floor(seconds / 60);
+            let sec = seconds % 60;
+            return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+        }
 
-        // Password Reset
-        document.getElementById('forgotForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('forgotUsername').value;
-            const errorDiv = document.getElementById('forgotError');
-            errorDiv.textContent = "";
+        // Debounce function
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
 
-            sendPasswordResetEmail(auth, email)
-                .then(() => {
-                    errorDiv.textContent = "Password reset email sent!";
-                })
-                .catch((error) => {
-                    errorDiv.textContent = error.message;
-                });
+        // Search functionality
+        document.getElementById('search').addEventListener('input', debounce(async (e) => {
+            const query = e.target.value.trim();
+            const suggestions = document.getElementById('suggestions');
+            
+            if (query.length > 0) {
+                try {
+                    const response = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=5`, {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`
+                        }
+                    });
+                    
+                    if (response.status === 401) {
+                        await getSpotifyToken();
+                        return;
+                    }
+
+                    const data = await response.json();
+                    suggestions.innerHTML = '';
+                    suggestions.style.display = 'block';
+
+                    data.tracks.items.forEach(track => {
+                        const div = document.createElement('div');
+                        div.className = 'suggestion';
+                        div.innerHTML = `
+                            <div>${track.name}</div>
+                            <small>${track.artists.map(artist => artist.name).join(', ')}</small>
+                        `;
+                        div.onclick = () => {
+                            playSong(track.id, track.name, Math.floor(track.duration_ms / 1000));
+                            document.getElementById('search').value = track.name;
+                            suggestions.style.display = 'none';
+                            document.getElementById('lyrics').innerText = 'Loading lyrics...';
+                            
+                            // Here you can add lyrics API integration
+                            setTimeout(() => {
+                                document.getElementById('lyrics').innerText = 'Lyrics are not available for this song.';
+                            }, 1000);
+                        };
+                        suggestions.appendChild(div);
+                    });
+                } catch (error) {
+                    console.error('Search error:', error);
+                    suggestions.innerHTML = '<div class="suggestion">Error searching songs</div>';
+                }
+            } else {
+                suggestions.style.display = 'none';
+            }
+        }, 300));
+
+        // Close suggestions when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-bar')) {
+                document.getElementById('suggestions').style.display = 'none';
+            }
         });
     </script>
     <script>
