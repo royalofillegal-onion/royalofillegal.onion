@@ -3,10 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Authentication</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
         body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #000; }
@@ -14,90 +11,14 @@
         h2 { color: #0f0; margin-bottom: 20px; }
         .inputBox { position: relative; margin-bottom: 20px; }
         .inputBox input { width: 100%; padding: 10px; background: #333; border: none; color: #fff; border-radius: 4px; }
-        .inputBox input[type="submit"] { background: #0f0; color: #000; font-weight: bold; cursor: pointer; }
-        .links { display: flex; justify-content: space-between; }
+        .inputBox input[type="submit"], button { background: #0f0; color: #000; font-weight: bold; cursor: pointer; padding: 10px; width: 100%; border: none; border-radius: 4px; margin-top: 10px; }
+        .links { display: flex; justify-content: space-between; margin-top: 10px; }
         .links a { color: #0f0; text-decoration: none; cursor: pointer; }
         .error { color: red; font-size: 14px; margin-bottom: 10px; }
     </style>
-</head>
-<body> 
-    <!-- Login Form -->
-    <div class="container" id="loginContainer">
-        <h2>Login</h2>
-        <div class="error" id="loginError"></div>
-        <form id="loginForm">
-            <div class="inputBox">
-                <input type="text" id="loginUsername" placeholder="Email" required>
-            </div>
-            <div class="inputBox">
-                <input type="password" id="loginPassword" placeholder="Password" required>
-            </div>
-            <div class="links">
-                <a href="javascript:void(0);" onclick="showForgotPassword()">Forgot Password?</a>
-                <a href="javascript:void(0);" onclick="showRegister()">Register</a>
-            </div>
-            <div class="inputBox">
-                <input type="submit" value="Login">
-            </div>
-        </form>
-    </div>
-    
-    <!-- Register Form -->
-    <div class="container" id="registerContainer" style="display: none;">
-        <h2>Register</h2>
-        <div class="error" id="registerError"></div>
-        <form id="registerForm">
-            <div class="inputBox">
-                <input type="text" id="registerUsername" placeholder="Email" required>
-            </div>
-            <div class="inputBox">
-                <input type="password" id="registerPassword" placeholder="Password" required>
-            </div>
-            <div class="inputBox">
-                <input type="submit" value="Register">
-            </div>
-            <a href="javascript:void(0);" onclick="showLogin()">Back to Login</a>
-        </form>
-    </div>
-    
-    <!-- Forgot Password Form -->
-    <div class="container" id="forgotContainer" style="display: none;">
-        <h2>Forgot Password</h2>
-        <div class="error" id="forgotError"></div>
-        <form id="forgotForm">
-            <div class="inputBox">
-                <input type="text" id="forgotUsername" placeholder="Enter your email" required>
-            </div>
-            <div class="inputBox">
-                <input type="submit" value="Reset Password">
-            </div>
-            <a href="javascript:void(0);" onclick="showLogin()">Back to Login</a>
-        </form>
-    </div>
-
-    <!-- Show/Hide Forms Script -->
-    <script>
-        function showRegister() {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('registerContainer').style.display = 'block';
-            document.getElementById('forgotContainer').style.display = 'none';
-        }
-        function showForgotPassword() {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('registerContainer').style.display = 'none';
-            document.getElementById('forgotContainer').style.display = 'block';
-        }
-        function showLogin() {
-            document.getElementById('loginContainer').style.display = 'block';
-            document.getElementById('registerContainer').style.display = 'none';
-            document.getElementById('forgotContainer').style.display = 'none';
-        }
-    </script>
-
-    <!-- Firebase Authentication Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 
         // Firebase Config
         const firebaseConfig = {
@@ -109,69 +30,52 @@
             appId: "1:796910377639:web:f8de8945e558fb9868d982",
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // User Registration
-        document.getElementById('registerForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('registerUsername').value;
-            const password = document.getElementById('registerPassword').value;
-            const errorDiv = document.getElementById('registerError');
-            errorDiv.textContent = "";
-
-            createUserWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                    showLogin();
-                })
-                .catch((error) => {
-                    errorDiv.textContent = error.message;
-                });
-        });
-
-        // User Login
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('loginUsername').value;
-            const password = document.getElementById('loginPassword').value;
-            const errorDiv = document.getElementById('loginError');
-            errorDiv.textContent = "";
-
-            signInWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                    window.location.href = "access.html"; // Redirect to dashboard
-                })
-                .catch((error) => {
-                    errorDiv.textContent = error.message;
-                });
-        });
-    
-    <script>
-        // Password Reset
-        document.getElementById('forgotForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('forgotUsername').value;
-            const errorDiv = document.getElementById('forgotError');
-            errorDiv.textContent = "";
-
-            sendPasswordResetEmail(auth, email)
-                .then(() => {
-                    errorDiv.textContent = "Password reset email sent!";
-                })
-                .catch((error) => {
-                    errorDiv.textContent = error.message;
-                });
-        });
-    </script>
-    <script>
-         document.addEventListener('contextmenu', (event) => event.preventDefault());
-         document.addEventListener('keydown', (event) => {
-            if (event.key === 'F12' || (event.ctrlKey && event.shiftKey && event.key === 'I')) {
-                event.preventDefault();
+        // Redirect if logged in
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                window.location.href = "access.html";
             }
         });
+
+        // Register
+        window.register = () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            createUserWithEmailAndPassword(auth, email, password)
+                .then(() => { alert("Registered Successfully"); window.location.href = "dashboard.html"; })
+                .catch(error => alert(error.message));
+        };
+
+        // Login
+        window.login = () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => { alert("Login Successful"); window.location.href = "dashboard.html"; })
+                .catch(error => alert(error.message));
+        };
+
+        // Reset Password
+        window.resetPassword = () => {
+            const email = document.getElementById('email').value;
+            sendPasswordResetEmail(auth, email)
+                .then(() => alert("Password Reset Email Sent"))
+                .catch(error => alert(error.message));
+        };
     </script>
+</head>
+<body>
+    <div class="container" id="container">
+        <h2>Firebase Authentication</h2>
+        <div class="inputBox"><input type="email" id="email" placeholder="Email" required></div>
+        <div class="inputBox"><input type="password" id="password" placeholder="Password" required></div>
+        <button onclick="login()">Login</button>
+        <button onclick="register()">Register</button>
+        <button onclick="resetPassword()">Forgot Password?</button>
+    </div>
 </body>
 </html>
 
