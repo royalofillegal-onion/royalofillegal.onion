@@ -54,15 +54,6 @@ const songDatabase = {
     getRandomSongs: function(count) {
         const shuffled = [...this.songs].sort(() => 0.5 - Math.random());
         return shuffled.slice(0, Math.min(count, shuffled.length));
-    },
-
-    getFeaturedPlaylists: function() {
-        return [
-            { id: 'p1', title: 'Test Playlist 1', description: 'Test Description 1', cover: 'https://picsum.photos/200?6' },
-            { id: 'p2', title: 'Test Playlist 2', description: 'Test Description 2', cover: 'https://picsum.photos/200?7' },
-            { id: 'p3', title: 'Test Playlist 3', description: 'Test Description 3', cover: 'https://picsum.photos/200?8' },
-            { id: 'p4', title: 'Test Playlist 4', description: 'Test Description 4', cover: 'https://picsum.photos/200?9' }
-        ];
     }
 };
 
