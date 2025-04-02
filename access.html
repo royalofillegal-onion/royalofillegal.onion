@@ -801,59 +801,5 @@
         });
     </script>
     <script src="script.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-    // Get all songs from songData.js
-    let allSongs = songDatabase.songs;
-
-    // Search functionality
-    const searchInput = document.getElementById('search-input');
-    const searchResults = document.getElementById('search-results');
-
-    searchInput.addEventListener('input', (e) => {
-        const query = e.target.value;
-        if (query.length < 2) {
-            searchResults.classList.remove('active');
-            return;
-        }
-
-        // Search songs using songDatabase.searchSongs
-        const results = songDatabase.searchSongs(query);
-        displaySearchResults(results);
-    });
-
-    function displaySearchResults(results) {
-        searchResults.innerHTML = '';
-        if (results.length === 0) {
-            searchResults.innerHTML = '<div class="search-result-item">No results found</div>';
-        } else {
-            results.forEach(song => {
-                const resultItem = document.createElement('div');
-                resultItem.className = 'search-result-item';
-                resultItem.innerHTML = `
-                    <img src="${song.cover}" alt="${song.title}">
-                    <div>
-                        <div>${song.title}</div>
-                        <div style="font-size: 0.8rem; color: #b3b3b3;">${song.artist}</div>
-                    </div>
-                `;
-                resultItem.addEventListener('click', () => {
-                    // When a song is clicked, you can handle it here
-                    console.log('Selected song:', song);
-                });
-                searchResults.appendChild(resultItem);
-            });
-        }
-        searchResults.classList.add('active');
-    }
-
-    // Close search results when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!searchResults.contains(e.target) && !searchInput.contains(e.target)) {
-            searchResults.classList.remove('active');
-        }
-    });
-});
-    </script>
 </body>
 </html>
