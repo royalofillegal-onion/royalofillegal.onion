@@ -9,7 +9,7 @@ const songDatabase = {
         },
         {
             id: 2,
-            title: "Test Song 2",
+            title: "hanuman",
             artist: "Test Artist 2",
             cover: "https://picsum.photos/200?2",
             file: "https://www2.cs.uic.edu/~i101/SoundFiles/CantinaBand60.wav"
