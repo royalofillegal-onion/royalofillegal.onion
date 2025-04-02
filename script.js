@@ -30,10 +30,10 @@ const songDatabase = {
         },
         {
             id: 5,
-            title: "Radhika",
-            artist: "Test Artist 5",
-            cover: "https://picsum.photos/200?5",
-            file: "https://res.cloudinary.com/dykzuljjr/video/upload/v1743345915/Radhika_verm5t.mp3"
+            title: "Pilla Padesaave",
+            artist: "Love Today",
+            cover: "https://res.cloudinary.com/dykzuljjr/image/upload/v1743417446/16697883393741_kwtjqx.jpg",
+            file: "https://res.cloudinary.com/dykzuljjr/video/upload/v1743417450/Pilla_Padesaave_128_Kbps_chpf6p.mp3"
         }
     ],
 
