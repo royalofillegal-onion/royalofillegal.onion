@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Royal authentication</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -42,9 +42,10 @@
             animation: float 15s infinite linear;
         }
         .container { 
-            width: 400px; 
+            width: 90%; 
+            max-width: 400px;
             background: rgba(34, 34, 34, 0.8); 
-            padding: 40px; 
+            padding: 30px; 
             border-radius: 4px; 
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9); 
             text-align: center;
@@ -53,6 +54,7 @@
             animation: fadeIn 1s ease-in-out;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(155, 89, 182, 0.2);
+            margin: 20px auto;
         }
         h2 { 
             color: #9b59b6; 
@@ -69,13 +71,13 @@
         }
         .inputBox input { 
             width: 100%; 
-            padding: 15px; 
+            padding: 12px; 
             background: rgba(51, 51, 51, 0.8); 
             border: 1px solid rgba(155, 89, 182, 0.3);
             color: #fff; 
             border-radius: 4px;
             transition: all 0.3s ease;
-            font-size: 1.1em;
+            font-size: 1em;
         }
         .inputBox input:focus {
             outline: none;
@@ -371,25 +373,90 @@
 
         // Form visibility functions
         function showRegister() {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('registerContainer').style.display = 'block';
-            document.getElementById('forgotContainer').style.display = 'none';
+            const loginContainer = document.getElementById('loginContainer');
+            const registerContainer = document.getElementById('registerContainer');
+            const forgotContainer = document.getElementById('forgotContainer');
+            
+            loginContainer.style.display = 'none';
+            registerContainer.style.display = 'block';
+            forgotContainer.style.display = 'none';
+            
+            // Clear any error messages
+            document.getElementById('registerError').textContent = '';
+            document.getElementById('registerUsername').value = '';
+            document.getElementById('registerPassword').value = '';
+            
             setBoyEmotion('happy', "Let's create your account!");
+            document.getElementById('registerUsername').focus();
         }
 
         function showForgotPassword() {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('registerContainer').style.display = 'none';
-            document.getElementById('forgotContainer').style.display = 'block';
+            const loginContainer = document.getElementById('loginContainer');
+            const registerContainer = document.getElementById('registerContainer');
+            const forgotContainer = document.getElementById('forgotContainer');
+            
+            loginContainer.style.display = 'none';
+            registerContainer.style.display = 'none';
+            forgotContainer.style.display = 'block';
+            
+            // Clear any error messages
+            document.getElementById('forgotError').textContent = '';
+            document.getElementById('forgotUsername').value = '';
+            
             setBoyEmotion('happy', "Don't worry, I'll help you reset your password!");
+            document.getElementById('forgotUsername').focus();
         }
 
         function showLogin() {
-            document.getElementById('loginContainer').style.display = 'block';
-            document.getElementById('registerContainer').style.display = 'none';
-            document.getElementById('forgotContainer').style.display = 'none';
+            const loginContainer = document.getElementById('loginContainer');
+            const registerContainer = document.getElementById('registerContainer');
+            const forgotContainer = document.getElementById('forgotContainer');
+            
+            loginContainer.style.display = 'block';
+            registerContainer.style.display = 'none';
+            forgotContainer.style.display = 'none';
+            
+            // Clear any error messages
+            document.getElementById('loginError').textContent = '';
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+            
             setBoyEmotion('happy', "Welcome back! Ready to login?");
+            document.getElementById('loginUsername').focus();
         }
+
+        // Add click event listeners for the links
+        document.addEventListener('DOMContentLoaded', () => {
+            // Register link
+            const registerLink = document.querySelector('a[onclick="showRegister()"]');
+            if (registerLink) {
+                registerLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showRegister();
+                });
+            }
+            
+            // Forgot password link
+            const forgotLink = document.querySelector('a[onclick="showForgotPassword()"]');
+            if (forgotLink) {
+                forgotLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showForgotPassword();
+                });
+            }
+            
+            // Back to login links (multiple)
+            const backToLoginLinks = document.querySelectorAll('a[onclick="showLogin()"]');
+            backToLoginLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showLogin();
+                });
+            });
+
+            // Initialize with login form
+            showLogin();
+        });
 
         // Check for existing session
         onAuthStateChanged(auth, (user) => {
@@ -402,22 +469,30 @@
         // Login form submission
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('loginUsername').value;
-            const password = document.getElementById('loginPassword').value;
+            const email = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
             const errorDiv = document.getElementById('loginError');
             errorDiv.textContent = "";
+
+            if (!email || !password) {
+                errorDiv.textContent = "Please fill in all fields!";
+                setBoyEmotion('angry', "Please fill in all fields!");
+                return;
+            }
 
             try {
                 setBoyEmotion('happy', 'Checking credentials...');
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 
-                // Only store minimal information
+                // Store minimal information
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('userEmail', email);
                 
                 setBoyEmotion('happy', 'Welcome back! Logging you in...');
+                
+                // Ensure the redirection happens after the animation
                 setTimeout(() => {
-                    window.location.href = "access.html";
+                    window.location.replace("access.html");
                 }, 1500);
             } catch (error) {
                 let errorMessage = "Login failed!";
@@ -434,6 +509,9 @@
                     case 'auth/too-many-requests':
                         errorMessage = "Too many failed attempts. Try again later!";
                         break;
+                    case 'auth/network-request-failed':
+                        errorMessage = "Network error. Please check your connection!";
+                        break;
                 }
                 setBoyEmotion('angry', errorMessage);
                 errorDiv.textContent = errorMessage;
@@ -446,10 +524,22 @@
         // Register form submission
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('registerUsername').value;
-            const password = document.getElementById('registerPassword').value;
+            const email = document.getElementById('registerUsername').value.trim();
+            const password = document.getElementById('registerPassword').value.trim();
             const errorDiv = document.getElementById('registerError');
             errorDiv.textContent = "";
+
+            if (!email || !password) {
+                errorDiv.textContent = "Please fill in all fields!";
+                setBoyEmotion('angry', "Please fill in all fields!");
+                return;
+            }
+
+            if (password.length < 6) {
+                errorDiv.textContent = "Password must be at least 6 characters!";
+                setBoyEmotion('angry', "Password must be at least 6 characters!");
+                return;
+            }
 
             try {
                 setBoyEmotion('happy', 'Creating your account...');
@@ -472,6 +562,9 @@
                     case 'auth/weak-password':
                         errorMessage = "Password should be at least 6 characters!";
                         break;
+                    case 'auth/network-request-failed':
+                        errorMessage = "Network error. Please check your connection!";
+                        break;
                 }
                 setBoyEmotion('angry', errorMessage);
                 errorDiv.textContent = errorMessage;
@@ -484,9 +577,15 @@
         // Forgot password form submission
         forgotForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('forgotUsername').value;
+            const email = document.getElementById('forgotUsername').value.trim();
             const errorDiv = document.getElementById('forgotError');
             errorDiv.textContent = "";
+
+            if (!email) {
+                errorDiv.textContent = "Please enter your email!";
+                setBoyEmotion('angry', "Please enter your email!");
+                return;
+            }
 
             try {
                 setBoyEmotion('happy', 'Sending reset email...');
@@ -503,6 +602,9 @@
                         break;
                     case 'auth/user-not-found':
                         errorMessage = "No account found with this email!";
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = "Network error. Please check your connection!";
                         break;
                 }
                 setBoyEmotion('angry', errorMessage);
