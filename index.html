@@ -473,8 +473,8 @@
                     return;
                 }
                 
-                // Only redirect if credentials are valid for today
-                if (localStorage.getItem('isLoggedIn') === 'true') {
+                // Only redirect if credentials are valid for today and user is not on login page
+                if (localStorage.getItem('isLoggedIn') === 'true' && !window.location.pathname.includes('index.html')) {
                     window.location.href = "access.html";
                 }
             }
