@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Royal authentication</title>
+    <title>Login</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -461,8 +461,22 @@
         // Check for existing session
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // If user is already authenticated, redirect to access page
-                window.location.href = "access.html";
+                // Check if credentials were stored today
+                const lastLoginDate = localStorage.getItem('lastLoginDate');
+                const today = new Date().toDateString();
+                
+                if (lastLoginDate !== today) {
+                    // If it's a new day, clear stored credentials
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('lastLoginDate');
+                    return;
+                }
+                
+                // Only redirect if credentials are valid for today
+                if (localStorage.getItem('isLoggedIn') === 'true') {
+                    window.location.href = "access.html";
+                }
             }
         });
 
@@ -484,9 +498,10 @@
                 setBoyEmotion('happy', 'Checking credentials...');
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 
-                // Store minimal information
+                // Store credentials and today's date
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('userEmail', email);
+                localStorage.setItem('lastLoginDate', new Date().toDateString());
                 
                 setBoyEmotion('happy', 'Welcome back! Logging you in...');
                 
@@ -546,6 +561,7 @@
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('userEmail', email);
+                localStorage.setItem('lastLoginDate', new Date().toDateString());
                 setBoyEmotion('happy', 'Account created successfully!');
                 setTimeout(() => {
                     showLogin();
@@ -617,10 +633,16 @@
 
         // Clear any stored credentials on page load
         window.addEventListener('load', () => {
-            // Clear any existing credentials
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userEmail');
-            localStorage.removeItem('userPassword');
+            // Check if credentials were stored today
+            const lastLoginDate = localStorage.getItem('lastLoginDate');
+            const today = new Date().toDateString();
+            
+            if (lastLoginDate !== today) {
+                // If it's a new day, clear stored credentials
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('lastLoginDate');
+            }
             
             // Check Firebase authentication state
             auth.onAuthStateChanged((user) => {
