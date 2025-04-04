@@ -9,18 +9,277 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
-        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #000; }
-        .container { width: 400px; background: #222; padding: 40px; border-radius: 4px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9); text-align: center; }
-        h2 { color: #0f0; margin-bottom: 20px; }
-        .inputBox { position: relative; margin-bottom: 20px; }
-        .inputBox input { width: 100%; padding: 10px; background: #333; border: none; color: #fff; border-radius: 4px; }
-        .inputBox input[type="submit"] { background: #0f0; color: #000; font-weight: bold; cursor: pointer; }
-        .links { display: flex; justify-content: space-between; }
-        .links a { color: #0f0; text-decoration: none; cursor: pointer; }
-        .error { color: red; font-size: 14px; margin-bottom: 10px; }
+        body { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            background: linear-gradient(45deg, #1a1a1a, #2d1b3b);
+            overflow: hidden;
+            position: relative;
+        }
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, rgba(155, 89, 182, 0.1) 0%, rgba(0, 0, 0, 0.8) 100%);
+        }
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #9b59b6;
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        .container { 
+            width: 400px; 
+            background: rgba(34, 34, 34, 0.8); 
+            padding: 40px; 
+            border-radius: 4px; 
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9); 
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 1s ease-in-out;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(155, 89, 182, 0.2);
+        }
+        h2 { 
+            color: #9b59b6; 
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(155, 89, 182, 0.5);
+            animation: glow 2s infinite alternate;
+            font-size: 2.5em;
+            letter-spacing: 2px;
+        }
+        .inputBox { 
+            position: relative; 
+            margin-bottom: 20px;
+            animation: slideUp 0.5s ease-out;
+        }
+        .inputBox input { 
+            width: 100%; 
+            padding: 15px; 
+            background: rgba(51, 51, 51, 0.8); 
+            border: 1px solid rgba(155, 89, 182, 0.3);
+            color: #fff; 
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+        }
+        .inputBox input:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(155, 89, 182, 0.5);
+            border-color: #9b59b6;
+        }
+        .inputBox input[type="submit"] { 
+            background: linear-gradient(45deg, #9b59b6, #8e44ad); 
+            color: #fff; 
+            font-weight: bold; 
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .inputBox input[type="submit"]:hover {
+            background: linear-gradient(45deg, #8e44ad, #9b59b6);
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(155, 89, 182, 0.6);
+        }
+        .links { 
+            display: flex; 
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .links a { 
+            color: #9b59b6; 
+            text-decoration: none; 
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .links a:hover {
+            color: #8e44ad;
+            text-shadow: 0 0 5px rgba(155, 89, 182, 0.5);
+            transform: translateY(-2px);
+        }
+        .error { 
+            color: #e74c3c; 
+            font-size: 14px; 
+            margin-bottom: 10px;
+            animation: shake 0.5s ease-in-out;
+        }
+        .netflix-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #9b59b6;
+            font-size: 2em;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(155, 89, 182, 0.5);
+            animation: pulse 2s infinite;
+        }
+        .eagle {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%239b59b6" d="M12,2L2,7L12,12L22,7L12,2M2,17L12,22L22,17L12,12L2,17Z"/></svg>') no-repeat center center;
+            background-size: contain;
+            animation: fly 20s linear infinite;
+            z-index: 0;
+        }
+        .fire {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #9b59b6;
+            border-radius: 50%;
+            filter: blur(5px);
+            animation: fire 1s infinite alternate;
+            display: none;
+        }
+        .boy-character {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 150px;
+            height: 200px;
+            z-index: 2;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .boy-body {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            animation: bounce 2s infinite;
+        }
+        .boy-body.happy {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200"><circle cx="50" cy="30" r="20" fill="%23ffd700"/><path d="M30,50 L70,50 L60,150 L40,150 Z" fill="%23ffd700"/><path d="M30,50 L20,100 L40,100 Z" fill="%23ffd700"/><path d="M70,50 L80,100 L60,100 Z" fill="%23ffd700"/><path d="M30,20 Q50,40 70,20" stroke="%23000" stroke-width="2" fill="none"/></svg>') no-repeat center center;
+        }
+        .boy-body.angry {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200"><circle cx="50" cy="30" r="20" fill="%23ffd700"/><path d="M30,50 L70,50 L60,150 L40,150 Z" fill="%23ffd700"/><path d="M30,50 L20,100 L40,100 Z" fill="%23ffd700"/><path d="M70,50 L80,100 L60,100 Z" fill="%23ffd700"/><path d="M30,20 L40,25" stroke="%23000" stroke-width="2"/><path d="M70,20 L60,25" stroke="%23000" stroke-width="2"/></svg>') no-repeat center center;
+            animation: shake 0.5s infinite;
+        }
+        .speech-bubble {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            width: 200px;
+            text-align: center;
+            color: #333;
+            font-weight: bold;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .speech-bubble.angry {
+            background: rgba(255, 200, 200, 0.9);
+            color: #c00;
+        }
+        .speech-bubble.happy {
+            background: rgba(200, 255, 200, 0.9);
+            color: #0a0;
+        }
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 20px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: rgba(255, 255, 255, 0.9) transparent;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-100px) translateX(100px); opacity: 0; }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 5px rgba(155, 89, 182, 0.5); }
+            to { text-shadow: 0 0 20px rgba(155, 89, 182, 0.8); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        @keyframes fly {
+            0% { transform: translate(-100px, 100px) rotate(0deg); }
+            100% { transform: translate(calc(100vw + 100px), -100px) rotate(360deg); }
+        }
+        @keyframes fire {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.5); opacity: 0.4; }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            75% { transform: rotate(-15deg); }
+        }
+        @keyframes jump {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .boy-character.happy {
+            animation: jump 0.5s ease-in-out;
+        }
+        .boy-character.angry {
+            animation: shake 0.2s infinite;
+        }
+        .boy-character:hover {
+            transform: scale(1.1);
+        }
+        .boy-character:hover .speech-bubble {
+            display: block;
+        }
     </style>
 </head>
 <body> 
+    <div class="background"></div>
+    <div class="particles"></div>
+    <div class="netflix-logo">ROYALSTAR</div>
+    <div class="eagle"></div>
+    <div class="fire"></div>
+    <div class="boy-character">
+        <div class="boy-body happy"></div>
+        <div class="speech-bubble" id="boyMessage">Hi! Ready to login? Click me for help!</div>
+    </div>
+
     <!-- Login Form -->
     <div class="container" id="loginContainer">
         <h2>Login</h2>
@@ -75,29 +334,9 @@
         </form>
     </div>
 
-    <!-- Show/Hide Forms Script -->
-    <script>
-        function showRegister() {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('registerContainer').style.display = 'block';
-            document.getElementById('forgotContainer').style.display = 'none';
-        }
-        function showForgotPassword() {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('registerContainer').style.display = 'none';
-            document.getElementById('forgotContainer').style.display = 'block';
-        }
-        function showLogin() {
-            document.getElementById('loginContainer').style.display = 'block';
-            document.getElementById('registerContainer').style.display = 'none';
-            document.getElementById('forgotContainer').style.display = 'none';
-        }
-    </script>
-
-    <!-- Firebase Authentication Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 
         // Firebase Config
         const firebaseConfig = {
@@ -113,54 +352,219 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // User Registration
-        document.getElementById('registerForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('registerUsername').value;
-            const password = document.getElementById('registerPassword').value;
-            const errorDiv = document.getElementById('registerError');
-            errorDiv.textContent = "";
+        // DOM Elements
+        const boyCharacter = document.querySelector('.boy-character');
+        const boyBody = document.querySelector('.boy-body');
+        const boyMessage = document.getElementById('boyMessage');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const forgotForm = document.getElementById('forgotForm');
 
-            createUserWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                    showLogin();
-                })
-                .catch((error) => {
-                    errorDiv.textContent = error.message;
-                });
+        // Boy character emotion function
+        function setBoyEmotion(emotion, message) {
+            boyCharacter.className = 'boy-character ' + emotion;
+            boyBody.className = 'boy-body ' + emotion;
+            boyMessage.className = 'speech-bubble ' + emotion;
+            boyMessage.textContent = message;
+            boyMessage.style.display = 'block';
+        }
+
+        // Form visibility functions
+        function showRegister() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'block';
+            document.getElementById('forgotContainer').style.display = 'none';
+            setBoyEmotion('happy', "Let's create your account!");
+        }
+
+        function showForgotPassword() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('forgotContainer').style.display = 'block';
+            setBoyEmotion('happy', "Don't worry, I'll help you reset your password!");
+        }
+
+        function showLogin() {
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('forgotContainer').style.display = 'none';
+            setBoyEmotion('happy', "Welcome back! Ready to login?");
+        }
+
+        // Check for existing session
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // If user is already authenticated, redirect to access page
+                window.location.href = "access.html";
+            }
         });
 
-        // User Login
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
+        // Login form submission
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
             const errorDiv = document.getElementById('loginError');
             errorDiv.textContent = "";
 
-            signInWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                    window.location.href = "access.html"; // Redirect to dashboard
-                })
-                .catch((error) => {
-                    errorDiv.textContent = error.message;
-                });
+            try {
+                setBoyEmotion('happy', 'Checking credentials...');
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                
+                // Only store minimal information
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userEmail', email);
+                
+                setBoyEmotion('happy', 'Welcome back! Logging you in...');
+                setTimeout(() => {
+                    window.location.href = "access.html";
+                }, 1500);
+            } catch (error) {
+                let errorMessage = "Login failed!";
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        errorMessage = "Invalid email format!";
+                        break;
+                    case 'auth/user-not-found':
+                        errorMessage = "No account found with this email!";
+                        break;
+                    case 'auth/wrong-password':
+                        errorMessage = "Incorrect password!";
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = "Too many failed attempts. Try again later!";
+                        break;
+                }
+                setBoyEmotion('angry', errorMessage);
+                errorDiv.textContent = errorMessage;
+                setTimeout(() => {
+                    setBoyEmotion('happy', 'Try again! I believe in you!');
+                }, 2000);
+            }
         });
 
-        // Password Reset
-        document.getElementById('forgotForm').addEventListener('submit', (e) => {
+        // Register form submission
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            const errorDiv = document.getElementById('registerError');
+            errorDiv.textContent = "";
+
+            try {
+                setBoyEmotion('happy', 'Creating your account...');
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userEmail', email);
+                setBoyEmotion('happy', 'Account created successfully!');
+                setTimeout(() => {
+                    showLogin();
+                }, 1500);
+            } catch (error) {
+                let errorMessage = "Registration failed!";
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = "Email already in use!";
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = "Invalid email format!";
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = "Password should be at least 6 characters!";
+                        break;
+                }
+                setBoyEmotion('angry', errorMessage);
+                errorDiv.textContent = errorMessage;
+                setTimeout(() => {
+                    setBoyEmotion('happy', 'Let\'s try again!');
+                }, 2000);
+            }
+        });
+
+        // Forgot password form submission
+        forgotForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('forgotUsername').value;
             const errorDiv = document.getElementById('forgotError');
             errorDiv.textContent = "";
 
-            sendPasswordResetEmail(auth, email)
-                .then(() => {
-                    errorDiv.textContent = "Password reset email sent!";
-                })
-                .catch((error) => {
-                    errorDiv.textContent = error.message;
-                });
+            try {
+                setBoyEmotion('happy', 'Sending reset email...');
+                await sendPasswordResetEmail(auth, email);
+                setBoyEmotion('happy', 'Reset email sent! Check your inbox.');
+                setTimeout(() => {
+                    showLogin();
+                }, 2000);
+            } catch (error) {
+                let errorMessage = "Failed to send reset email!";
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        errorMessage = "Invalid email format!";
+                        break;
+                    case 'auth/user-not-found':
+                        errorMessage = "No account found with this email!";
+                        break;
+                }
+                setBoyEmotion('angry', errorMessage);
+                errorDiv.textContent = errorMessage;
+                setTimeout(() => {
+                    setBoyEmotion('happy', 'I\'ll help you reset your password!');
+                }, 2000);
+            }
+        });
+
+        // Clear any stored credentials on page load
+        window.addEventListener('load', () => {
+            // Clear any existing credentials
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userPassword');
+            
+            // Check Firebase authentication state
+            auth.onAuthStateChanged((user) => {
+                if (!user) {
+                    // If not authenticated, ensure we're on the login page
+                    if (window.location.pathname.includes('access.html')) {
+                        window.location.href = "index.html";
+                    }
+                }
+            });
+        });
+
+        // Eagle and Fire Animation
+        const eagle = document.querySelector('.eagle');
+        const fire = document.querySelector('.fire');
+        
+        setInterval(() => {
+            const randomY = Math.random() * window.innerHeight;
+            const randomX = Math.random() * window.innerWidth;
+            fire.style.display = 'block';
+            fire.style.left = `${randomX}px`;
+            fire.style.top = `${randomY}px`;
+            setTimeout(() => {
+                fire.style.display = 'none';
+            }, 1000);
+        }, 2000);
+
+        // Create particles
+        const particlesContainer = document.querySelector('.particles');
+        for (let i = 0; i < 100; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.opacity = Math.random() * 0.5 + 0.5;
+            particle.style.width = Math.random() * 3 + 1 + 'px';
+            particle.style.height = particle.style.width;
+            particlesContainer.appendChild(particle);
+        }
+
+        // Add mouse move effect
+        document.addEventListener('mousemove', (e) => {
+            const container = document.querySelector('.container');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            container.style.transform = `perspective(1000px) rotateX(${(y - 0.5) * 5}deg) rotateY(${(x - 0.5) * 5}deg)`;
         });
     </script>
 </body>
