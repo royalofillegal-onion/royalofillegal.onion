@@ -912,7 +912,7 @@
             </div>
             <div class="search-results" id="search-results"></div>
         </div>
-        <button class="logout-btn"><a href="index.html">Logout</a></button>
+        <button class="logout-btn" id="logoutBtn">Logout</button>
     </header>
 
     <main>
@@ -969,7 +969,51 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAaQDKLlmT3zYC5ww3rxiul_FB7HfviZUA",
+            authDomain: "royalstar-d6a4e.firebaseapp.com",
+            projectId: "royalstar-d6a4e",
+            storageBucket: "royalstar-d6a4e.firebasestorage.app",
+            messagingSenderId: "796910377639",
+            appId: "1:796910377639:web:f8de8945e558fb9868d982",
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Check authentication state on page load
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "index.html";
+            }
+        });
+
+        // Add logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            try {
+                // Clear all stored credentials
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('lastLoginDate');
+                
+                // Sign out from Firebase
+                await signOut(auth);
+                
+                // Redirect to index.html
+                window.location.href = "index.html";
+            } catch (error) {
+                console.error('Error signing out:', error);
+                // Still redirect even if there's an error
+                window.location.href = "index.html";
+            }
+        });
+
         // Song Data
         const songData = {
             recentlyPlayed: [
@@ -1284,7 +1328,9 @@
                         resultItem.addEventListener('click', () => {
                             currentSongIndex = allSongs.findIndex(s => s.title === song.title);
                             loadSong(song);
-                            togglePlay();
+                            audio.play();
+                            isPlaying = true;
+                            document.querySelector('#play-pause i').classList.replace('fa-play', 'fa-pause');
                             searchResults.classList.remove('active');
                             searchInput.value = '';
                         });
@@ -1320,10 +1366,8 @@
                                 const currentSongTitle = document.getElementById('current-song').textContent;
                                 
                                 if (currentSongTitle === song.title) {
-                                    // If clicking the same song, toggle play/pause
                                     togglePlay();
                                 } else {
-                                    // If clicking a different song, stop current and play new
                                     if (isPlaying) {
                                         audio.pause();
                                     }
