@@ -337,24 +337,22 @@
     </div>
 
     <script type="module">
-        // Import Firebase modules
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-        import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 
-        // Firebase Configuration
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyAaQDKLlmT3zYC5ww3rxiul_FB7HfviZUA",
             authDomain: "royalstar-d6a4e.firebaseapp.com",
             projectId: "royalstar-d6a4e",
             storageBucket: "royalstar-d6a4e.firebasestorage.app",
             messagingSenderId: "796910377639",
-            appId: "1:796910377639:web:f8de8945e558fb9868d982"
+            appId: "1:796910377639:web:f8de8945e558fb9868d982",
         };
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
 
         // DOM Elements
         const boyCharacter = document.querySelector('.boy-character');
@@ -460,28 +458,78 @@
             showLogin();
         });
 
-        // Login with Google
+        // Check for existing session
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Check if credentials were stored today
+                const lastLoginDate = localStorage.getItem('lastLoginDate');
+                const today = new Date().toDateString();
+                
+                if (lastLoginDate !== today) {
+                    // If it's a new day, clear stored credentials
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('lastLoginDate');
+                    return;
+                }
+                
+                // Only redirect if credentials are valid for today and user is not on login page
+                if (localStorage.getItem('isLoggedIn') === 'true' && !window.location.pathname.includes('index.html')) {
+                    window.location.href = "access.html";
+                }
+            }
+        });
+
+        // Login form submission
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const email = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            const errorDiv = document.getElementById('loginError');
+            errorDiv.textContent = "";
+
+            if (!email || !password) {
+                errorDiv.textContent = "Please fill in all fields!";
+                setBoyEmotion('angry', "Please fill in all fields!");
+                return;
+            }
+
             try {
-                setBoyEmotion('happy', 'Logging in with Google...');
-                const result = await signInWithPopup(auth, provider);
-                const user = result.user;
+                setBoyEmotion('happy', 'Checking credentials...');
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 
                 // Store credentials and today's date
                 localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('userEmail', user.email);
+                localStorage.setItem('userEmail', email);
                 localStorage.setItem('lastLoginDate', new Date().toDateString());
                 
-                setBoyEmotion('happy', 'Welcome! Logging you in...');
+                setBoyEmotion('happy', 'Welcome back! Logging you in...');
                 
                 // Ensure the redirection happens after the animation
                 setTimeout(() => {
                     window.location.replace("access.html");
                 }, 1500);
             } catch (error) {
-                setBoyEmotion('angry', 'Login failed! Please try again.');
-                console.error('Error:', error);
+                let errorMessage = "Login failed!";
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        errorMessage = "Invalid email format!";
+                        break;
+                    case 'auth/user-not-found':
+                        errorMessage = "No account found with this email!";
+                        break;
+                    case 'auth/wrong-password':
+                        errorMessage = "Incorrect password!";
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = "Too many failed attempts. Try again later!";
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = "Network error. Please check your connection!";
+                        break;
+                }
+                setBoyEmotion('angry', errorMessage);
+                errorDiv.textContent = errorMessage;
                 setTimeout(() => {
                     setBoyEmotion('happy', 'Try again! I believe in you!');
                 }, 2000);
@@ -511,7 +559,6 @@
             try {
                 setBoyEmotion('happy', 'Creating your account...');
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('userEmail', email);
                 localStorage.setItem('lastLoginDate', new Date().toDateString());
@@ -530,6 +577,9 @@
                         break;
                     case 'auth/weak-password':
                         errorMessage = "Password should be at least 6 characters!";
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = "Network error. Please check your connection!";
                         break;
                 }
                 setBoyEmotion('angry', errorMessage);
@@ -556,7 +606,6 @@
             try {
                 setBoyEmotion('happy', 'Sending reset email...');
                 await sendPasswordResetEmail(auth, email);
-                
                 setBoyEmotion('happy', 'Reset email sent! Check your inbox.');
                 setTimeout(() => {
                     showLogin();
@@ -570,6 +619,9 @@
                     case 'auth/user-not-found':
                         errorMessage = "No account found with this email!";
                         break;
+                    case 'auth/network-request-failed':
+                        errorMessage = "Network error. Please check your connection!";
+                        break;
                 }
                 setBoyEmotion('angry', errorMessage);
                 errorDiv.textContent = errorMessage;
@@ -579,37 +631,28 @@
             }
         });
 
-        // Check authentication state
-        auth.onAuthStateChanged((user) => {
-            // Get current page
-            const isLoginPage = window.location.pathname.includes('index.html');
-            const isAccessPage = window.location.pathname.includes('access.html');
+        // Clear any stored credentials on page load
+        window.addEventListener('load', () => {
+            // Check if credentials were stored today
+            const lastLoginDate = localStorage.getItem('lastLoginDate');
+            const today = new Date().toDateString();
             
-            if (user) {
-                // Check if credentials were stored today
-                const lastLoginDate = localStorage.getItem('lastLoginDate');
-                const today = new Date().toDateString();
-                
-                if (lastLoginDate !== today) {
-                    // If it's a new day, clear stored credentials and sign out
-                    localStorage.clear();
-                    auth.signOut();
-                    return;
-                }
-                
-                // If user is authenticated and on login page, redirect to access page
-                if (isLoginPage && localStorage.getItem('isLoggedIn') === 'true') {
-                    window.location.replace("access.html");
-                }
-            } else {
-                // Clear all storage on logout
-                localStorage.clear();
-                
-                // If not authenticated and on access page, redirect to login
-                if (isAccessPage) {
-                    window.location.replace("index.html");
-                }
+            if (lastLoginDate !== today) {
+                // If it's a new day, clear stored credentials
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('lastLoginDate');
             }
+            
+            // Check Firebase authentication state
+            auth.onAuthStateChanged((user) => {
+                if (!user) {
+                    // If not authenticated, ensure we're on the login page
+                    if (window.location.pathname.includes('access.html')) {
+                        window.location.href = "index.html";
+                    }
+                }
+            });
         });
 
         // Eagle and Fire Animation
