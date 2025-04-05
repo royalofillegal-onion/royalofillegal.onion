@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RoyalStar-Music</title>
+    <title>RoyalStar Music</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -1262,31 +1262,27 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Check authentication state on page load
+        // Simple auth check - redirect to login if not authenticated
         onAuthStateChanged(auth, (user) => {
             if (!user) {
-                window.location.href = "index.html";
+                window.location.href = 'index.html';
             }
         });
 
-        // Add logout functionality
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            try {
-                // Clear all stored credentials
-                localStorage.removeItem('isLoggedIn');
-                localStorage.removeItem('userEmail');
-                localStorage.removeItem('lastLoginDate');
-                
-                // Sign out from Firebase
-                await signOut(auth);
-                
-                // Redirect to index.html
-                window.location.href = "index.html";
-            } catch (error) {
+        // Simplified logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            // First clear all storage
+            localStorage.clear();
+            sessionStorage.clear();
+            
+            // Then sign out from Firebase
+            signOut(auth).then(() => {
+                window.location.href = 'index.html';
+            }).catch((error) => {
                 console.error('Error signing out:', error);
-                // Still redirect even if there's an error
-                window.location.href = "index.html";
-            }
+                // Force redirect even if there's an error
+                window.location.href = 'index.html';
+            });
         });
 
         // Song Data
