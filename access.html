@@ -1143,7 +1143,7 @@
     <!-- Add Feedback Marquee -->
     <div class="feedback-marquee" id="feedbackMarquee">
         <div class="marquee-content">
-            <i class="fas fa-star"></i> Share your feedback with us! Click here to tell us how we're doing <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i> Share your feedback with us! Click here to tell us how we're doing (Updating)<i class="fas fa-star"></i>
         </div>
     </div>
 
@@ -1192,7 +1192,7 @@
 
     <main>
         <div class="playlist-section">
-            <h2>Recently Played</h2>
+            <h2>New Releases</h2>
             <div class="slider-container" data-category="recentlyPlayed"></div>
         </div>
 
@@ -1202,12 +1202,12 @@
         </div>
 
         <div class="playlist-section">
-            <h2>Trending Now</h2>
+            <h2>Breakup and moodoff</h2>
             <div class="slider-container" data-category="trendingNow"></div>
         </div>
 
         <div class="playlist-section">
-            <h2>New Releases</h2>
+            <h2>Mass Thrilling</h2>
             <div class="slider-container" data-category="newReleases"></div>
         </div>
     </main>
@@ -1293,6 +1293,38 @@
         const songData = {
             recentlyPlayed: [
                 {
+                    title: 'Premalo',
+                    artist: 'Court',
+                    cover: 'https://res.cloudinary.com/dl8dmkhmv/image/upload/v1743872399/download_6_jpspgu.jpg',
+                    audio: 'https://res.cloudinary.com/dkhbceri0/video/upload/v1743866908/Premalo_ir0ohk.mp3'
+                },
+                {
+                    title: 'Godari Gattu',
+                    artist: 'Sankranthiki Vasthunam',
+                    cover: 'https://res.cloudinary.com/dl8dmkhmv/image/upload/v1743872530/download_7_fuc547.jpg',
+                    audio: 'https://res.cloudinary.com/dkhbceri0/video/upload/v1743866920/Godari_Gattu_vsw6tc.mp3'
+                },
+                {
+                    title: 'Bujji Thalli',
+                    artist: 'Thandel',
+                    cover: 'https://res.cloudinary.com/dl8dmkhmv/image/upload/v1743872765/download_8_vsrdmb.jpg',
+                    audio: 'https://res.cloudinary.com/dkhbceri0/video/upload/v1743866932/Bujji_Thalli_fmxl8l.mp3'
+                },
+                {
+                    title: 'Prema Velluva',
+                    artist: 'HIT 3',
+                    cover: 'https://res.cloudinary.com/dl8dmkhmv/image/upload/v1743873184/download_10_mpnm7m.jpg',
+                    audio: 'https://res.cloudinary.com/dkhbceri0/video/upload/v1743866982/Prema_Velluva_ruakii.mp3'
+                }
+            ],
+            featuredPlaylists: [
+                {
+                    title: 'Oh Pilla',
+                    artist: 'Private',
+                    cover: 'https://res.cloudinary.com/dcso0vsxw/image/upload/v1743778065/6bec1d111e19dd7d6573f59f9200d0889e6256143f0f9dad4612f9cdcfe52cb5.0_o5osap.jpg',
+                    audio: 'https://res.cloudinary.com/dcso0vsxw/video/upload/v1743778038/Oh_Pilla_PenduJatt.Com.Se_gnrf5f.mp3'
+                },
+                {
                     title: 'Chandruloo Unde',
                     artist: 'Nuvvostanante Nenoddantana',
                     cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743418357/images_c9cebr.jpg',
@@ -1303,6 +1335,70 @@
                     artist: '18 Pages',
                     cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743417356/16712135423689_h4r5p5.jpg',
                     audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743416935/Yedurangula_Vaana_128_Kbps_f9ppps.mp3'
+                },
+                {
+                    title: 'Yemito',
+                    artist: 'Andala Rakshasi',
+                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Andala-Rakshasi-2012jpeg_sl2cx9.jpg',
+                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Yemito_-_SenSongsmp3.Co_jk9o7m.mp3'
+                },
+                {
+                    title: 'Kumkumala',
+                    artist: 'Brahmastra',
+                    cover: 'https://res.cloudinary.com/dl8dmkhmv/image/upload/v1743872244/images_5_lpvdam.jpg',
+                    audio: 'https://res.cloudinary.com/dl8dmkhmv/video/upload/v1743872224/Kumkumala_te5lqe.mp3'
+                },
+                {
+                    title: 'Hilesso Hilessa',
+                    artist: 'Thandel',
+                    cover: 'https://res.cloudinary.com/dl8dmkhmv/image/upload/v1743872764/download_9_xq9sm5.jpg',
+                    audio: 'https://res.cloudinary.com/dkhbceri0/video/upload/v1743866911/Hilesso_Hilessa_rxtdxm.mp3'
+                },
+                {
+                    title: 'Choosi Chudangane',
+                    artist: 'Chalo',
+                    cover: 'https://res.cloudinary.com/dl8dmkhmv/image/upload/v1743872062/images_4_h05wcd.jpg',
+                    audio: 'https://res.cloudinary.com/dkhbceri0/video/upload/v1743866906/Choosi_Chudangane_-_SenSongsMp3.Co_jtc0t4.mp3'
+                },
+                {
+                    title: 'inkem inkem inkem kaavaale',
+                    artist: 'Geetha Govindam',
+                    cover: 'https://res.cloudinary.com/dkhbceri0/image/upload/v1743738733/size_m_1531202221_vcuqna.jpg',
+                    audio: 'https://res.cloudinary.com/dkhbceri0/video/upload/v1743591099/Inkem_Inkem_Inkem_Kaavaale_3D_-_SenSongsMp3.Co_jfxqn5.mp3'
+                }
+            ],
+            trendingNow: [
+                {
+                    title: 'Telisiney Na Nuvvey',
+                    artist: 'Arjun Reddy',
+                    cover: 'https://res.cloudinary.com/dl8dmkhmv/image/upload/v1743871578/download_5_dqdiwu.jpg',
+                    audio: 'https://res.cloudinary.com/dkhbceri0/video/upload/v1743867010/Telisiney_Na_Nuvvey_-_SenSongsMp3.Co_oydt9t.mp3'
+                },
+                {
+                    title: 'Nijamaa Kalaa',
+                    artist: 'Lucky Bhaskar',
+                    cover: 'https://res.cloudinary.com/dl8dmkhmv/image/upload/v1743869998/download_1_hxgr9u.jpg',
+                    audio: 'https://res.cloudinary.com/dkhbceri0/video/upload/v1743866875/Nijamaa_Kalaa_axb4wy.mp3'
+                },
+                {
+                    title: 'Oh My Lilly',
+                    artist: 'Dj Tillu 2',
+                    cover: 'https://res.cloudinary.com/dl8dmkhmv/image/upload/v1743870922/images_3_qgl7ji.jpg',
+                    audio: 'https://res.cloudinary.com/dkhbceri0/video/upload/v1743867085/Oh_My_Lilly_zpf9mw.mp3'
+                },
+                {
+                    title: 'Pranam Pothunna',
+                    artist: 'Love Today',
+                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743417446/16697883393741_kwtjqx.jpg',
+                    audio: 'https://res.cloudinary.com/dkhbceri0/video/upload/v1743866602/Pranam_Pothunna_ysm73c.mp3'
+                }
+            ],
+            newReleases: [
+                {
+                    title: 'Ticket Eh Konakunda',
+                    artist: 'Dj Tillu 2',
+                    cover: 'https://res.cloudinary.com/dl8dmkhmv/image/upload/v1743870405/images_1_h6vhmu.jpg',
+                    audio: 'https://res.cloudinary.com/dkhbceri0/video/upload/v1743867094/Ticket_Eh_Konakunda_cpxfbo.mp3'
                 },
                 {
                     title: 'Sooreede',
@@ -1311,244 +1407,28 @@
                     audio: 'https://res.cloudinary.com/dkhbceri0/video/upload/v1743591104/iSongs.info_03_-_Sooreede_e83d7n.mp3'
                 },
                 {
-                    title: 'inkem inkem inkem kaavaale',
-                    artist: 'Geetha Govindam',
-                    cover: 'https://res.cloudinary.com/dkhbceri0/image/upload/v1743738733/size_m_1531202221_vcuqna.jpg',
-                    audio: 'https://res.cloudinary.com/dkhbceri0/video/upload/v1743591099/Inkem_Inkem_Inkem_Kaavaale_3D_-_SenSongsMp3.Co_jfxqn5.mp3'
+                    title: 'Lucky Bhaskar(Title song)',
+                    artist: 'Lucky Bhaskar',
+                    cover: 'https://res.cloudinary.com/dl8dmkhmv/image/upload/v1743869643/download_qyluvw.jpg',
+                    audio: 'https://res.cloudinary.com/dkhbceri0/video/upload/v1743866865/Lucky_Baskhar_cgx23b.mp3'
                 },
                 {
-                    title: 'Ra Ra Rakkamma',
-                    artist: 'Vikrant Rona',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Vikrant-Rona-2022jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Ra_Ra_Rakkamma_-_SenSongsmp3.Co_jk9o7m.mp3'
+                    title: 'Single Kingulam',
+                    artist: 'A1 Express',
+                    cover: 'https://res.cloudinary.com/dl8dmkhmv/image/upload/v1743870091/download_2_b76xdp.jpg',
+                    audio: 'https://res.cloudinary.com/dkhbceri0/video/upload/v1743866885/Single_Kingulam_-_SenSongsMp3.Com_1_qvvwsw.mp3'
                 },
                 {
-                    title: 'Kesariya',
-                    artist: 'Brahmastra',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Brahmastra-2022jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Kesariya_-_SenSongsmp3.Co_jk9o7m.mp3'
+                    title: 'Radhika',
+                    artist: 'Dj Tillu 2',
+                    cover: 'https://res.cloudinary.com/dl8dmkhmv/image/upload/v1743870922/images_2_i0ol8j.jpg',
+                    audio: 'https://res.cloudinary.com/dkhbceri0/video/upload/v1743867082/Radhika_my4jpd.mp3'
                 },
                 {
-                    title: 'Ratchasa Maamaney',
-                    artist: 'Vikram',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Vikram-2022jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Ratchasa_Maamaney_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Yemito',
-                    artist: 'Andala Rakshasi',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Andala-Rakshasi-2012jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Yemito_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Kalaavathi',
-                    artist: 'Sitaramam',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Sitaramam-2023jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Kalaavathi_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Hukum',
-                    artist: 'Jailer',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Jailer-2023jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Hukum_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Naatu Naatu',
-                    artist: 'RRR',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/RRR-2022jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Naatu_Naatu_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Oo Solriya Oo Oo Solriya',
-                    artist: 'Pushpa',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Pushpa-2021jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Oo_Solriya_Oo_Oo_Solriya_-_SenSongsmp3.Co_jk9o7m.mp3'
-                }
-            ],
-            featuredPlaylists: [
-                {
-                    title: 'Nuvve Nuvve',
-                    artist: 'Varsham',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Varsham-2004jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Nuvve_Nuvve_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Oo Antava',
-                    artist: 'Pushpa',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Pushpa-2021jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Oo_Antava_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Ra Ra Rakkamma',
-                    artist: 'Vikrant Rona',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Vikrant-Rona-2022jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Ra_Ra_Rakkamma_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Kesariya',
-                    artist: 'Brahmastra',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Brahmastra-2022jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Kesariya_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Ratchasa Maamaney',
-                    artist: 'Vikram',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Vikram-2022jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Ratchasa_Maamaney_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Yemito',
-                    artist: 'Andala Rakshasi',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Andala-Rakshasi-2012jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Yemito_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Kalaavathi',
-                    artist: 'Sitaramam',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Sitaramam-2023jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Kalaavathi_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Hukum',
-                    artist: 'Jailer',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Jailer-2023jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Hukum_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Naatu Naatu',
-                    artist: 'RRR',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/RRR-2022jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Naatu_Naatu_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Oo Solriya Oo Oo Solriya',
-                    artist: 'Pushpa',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Pushpa-2021jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Oo_Solriya_Oo_Oo_Solriya_-_SenSongsmp3.Co_jk9o7m.mp3'
-                }
-            ],
-            trendingNow: [
-                {
-                    title: 'Hukum',
-                    artist: 'Jailer',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Jailer-2023jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Hukum_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Naatu Naatu',
-                    artist: 'RRR',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/RRR-2022jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Naatu_Naatu_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Oo Solriya Oo Oo Solriya',
-                    artist: 'Pushpa',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Pushpa-2021jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Oo_Solriya_Oo_Oo_Solriya_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Chandruloo Unde',
-                    artist: 'Nuvvostanante Nenoddantana',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743418357/images_c9cebr.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743418367/04_-_Chandrullo_Unde_Kundelu_-_SenSongsMp3.co_w0qnnr.mp3'
-                },
-                {
-                    title: 'Yedurangula Vaana',
-                    artist: '18 Pages',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743417356/16712135423689_h4r5p5.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743416935/Yedurangula_Vaana_128_Kbps_f9ppps.mp3'
-                },
-                {
-                    title: 'Nuvve Nuvve',
-                    artist: 'Varsham',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Varsham-2004jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Nuvve_Nuvve_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Oo Antava',
-                    artist: 'Pushpa',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Pushpa-2021jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Oo_Antava_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Ra Ra Rakkamma',
-                    artist: 'Vikrant Rona',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Vikrant-Rona-2022jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Ra_Ra_Rakkamma_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Kesariya',
-                    artist: 'Brahmastra',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Brahmastra-2022jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Kesariya_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Ratchasa Maamaney',
-                    artist: 'Vikram',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Vikram-2022jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Ratchasa_Maamaney_-_SenSongsmp3.Co_jk9o7m.mp3'
-                }
-            ],
-            newReleases: [
-                {
-                    title: 'Yemito',
-                    artist: 'Andala Rakshasi',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Andala-Rakshasi-2012jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Yemito_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Kalaavathi',
-                    artist: 'Sitaramam',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Sitaramam-2023jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Kalaavathi_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Hukum',
-                    artist: 'Jailer',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Jailer-2023jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Hukum_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Naatu Naatu',
-                    artist: 'RRR',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/RRR-2022jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Naatu_Naatu_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Oo Solriya Oo Oo Solriya',
-                    artist: 'Pushpa',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Pushpa-2021jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Oo_Solriya_Oo_Oo_Solriya_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Chandruloo Unde',
-                    artist: 'Nuvvostanante Nenoddantana',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743418357/images_c9cebr.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743418367/04_-_Chandrullo_Unde_Kundelu_-_SenSongsMp3.co_w0qnnr.mp3'
-                },
-                {
-                    title: 'Yedurangula Vaana',
-                    artist: '18 Pages',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743417356/16712135423689_h4r5p5.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743416935/Yedurangula_Vaana_128_Kbps_f9ppps.mp3'
-                },
-                {
-                    title: 'Nuvve Nuvve',
-                    artist: 'Varsham',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Varsham-2004jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Nuvve_Nuvve_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Oo Antava',
-                    artist: 'Pushpa',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Pushpa-2021jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Oo_Antava_-_SenSongsmp3.Co_jk9o7m.mp3'
-                },
-                {
-                    title: 'Ra Ra Rakkamma',
-                    artist: 'Vikrant Rona',
-                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743436807/Vikrant-Rona-2022jpeg_sl2cx9.jpg',
-                    audio: 'https://res.cloudinary.com/dykzuljjr/video/upload/v1743436814/Ra_Ra_Rakkamma_-_SenSongsmp3.Co_jk9o7m.mp3'
+                    title: 'Bujjikanna',
+                    artist: 'Love Today',
+                    cover: 'https://res.cloudinary.com/dykzuljjr/image/upload/v1743417531/16712506771622_pzuipy.jpg',
+                    audio: 'https://res.cloudinary.com/dkhbceri0/video/upload/v1743867065/Bujjikanna_128_Kbps_wj0lmh.mp3'
                 }
             ]
         };
