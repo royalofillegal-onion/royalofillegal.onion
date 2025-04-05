@@ -830,6 +830,20 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
+        .success-message {
+            display: none;
+            text-align: center;
+            color: #22c55e;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         .feedback-modal.active {
             display: block;
             animation: modalFadeIn 0.3s ease;
@@ -1141,7 +1155,7 @@
             <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_autoresponse" value="Thank you for your feedback! We appreciate your input.">
             <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="_next" value="https://yourdomain.com/thank-you.html">
+            <input type="hidden" name="_next" value="https://royalstar-music.vercel.app/thank-you.html">
             <div class="input-group">
                 <textarea id="feedbackText" name="feedback" placeholder="Share your thoughts with us..." required></textarea>
             </div>
@@ -1156,6 +1170,9 @@
                 </select>
             </div>
             <button type="submit" class="upload-btn">Submit Feedback</button>
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i> Thank you for your feedback!
+            </div>
         </form>
     </div>
 
@@ -1783,6 +1800,7 @@
             const feedbackModal = document.getElementById('feedbackModal');
             const feedbackForm = document.getElementById('feedbackForm');
             const closeModal = document.getElementById('closeModal');
+            const successMessage = document.getElementById('successMessage');
 
             feedbackMarquee.addEventListener('click', () => {
                 feedbackModal.classList.add('active');
@@ -1790,9 +1808,16 @@
 
             closeModal.addEventListener('click', () => {
                 feedbackModal.classList.remove('active');
+                successMessage.style.display = 'none';
+                feedbackForm.reset();
             });
 
             feedbackForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Show success message
+                successMessage.style.display = 'block';
+                
                 // Submit form in background
                 const formData = new FormData(feedbackForm);
                 fetch(feedbackForm.action, {
@@ -1803,15 +1828,20 @@
                     console.error('Error:', error);
                 });
                 
-                // Close modal and reset form
-                feedbackModal.classList.remove('active');
-                feedbackForm.reset();
+                // Reset form and close modal after delay
+                setTimeout(() => {
+                    feedbackModal.classList.remove('active');
+                    successMessage.style.display = 'none';
+                    feedbackForm.reset();
+                }, 3000);
             });
 
             // Close modal when clicking outside
             document.addEventListener('click', (e) => {
                 if (e.target === feedbackModal) {
                     feedbackModal.classList.remove('active');
+                    successMessage.style.display = 'none';
+                    feedbackForm.reset();
                 }
             });
         });
