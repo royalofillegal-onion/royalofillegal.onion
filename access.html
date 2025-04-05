@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RoyalStar Music</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -777,64 +777,280 @@
             text-shadow: 0 0 10px rgba(147, 51, 234, 0.6);
         }
 
+        /* Advanced Marquee Styles */
+        .feedback-marquee {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg, #9333ea, #22c55e);
+            color: white;
+            padding: 12px 0;
+            overflow: hidden;
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .feedback-marquee:hover {
+            background: linear-gradient(90deg, #22c55e, #9333ea);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .marquee-content {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 20s linear infinite;
+            padding-left: 100%;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .feedback-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(40, 40, 40, 0.98);
+            padding: 30px;
+            border-radius: 16px;
+            z-index: 1001;
+            width: 90%;
+            max-width: 500px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .feedback-modal.active {
+            display: block;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        .feedback-modal h3 {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(45deg, #9333ea, #22c55e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(147, 51, 234, 0.3);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group textarea {
+            width: 100%;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 120px;
+            transition: all 0.3s ease;
+        }
+
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #9333ea;
+            box-shadow: 0 0 15px rgba(147, 51, 234, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .input-group select {
+            width: 100%;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            background: rgba(40, 40, 40, 0.95);
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+        }
+
+        .input-group select:focus {
+            outline: none;
+            border-color: #9333ea;
+            box-shadow: 0 0 15px rgba(147, 51, 234, 0.3);
+            background-color: rgba(40, 40, 40, 0.98);
+        }
+
+        .input-group select option {
+            background: rgba(40, 40, 40, 0.98);
+            color: #fff;
+            padding: 10px;
+            font-size: 1rem;
+        }
+
+        .input-group select option:hover {
+            background: rgba(147, 51, 234, 0.3);
+        }
+
+        .input-group select option:checked {
+            background: linear-gradient(45deg, #9333ea, #22c55e);
+            color: white;
+        }
+
+        .upload-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #9333ea, #22c55e);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(147, 51, 234, 0.4);
+        }
+
+        .upload-btn:active {
+            transform: translateY(0);
+        }
+
+        @keyframes modalFadeIn {
+            from { 
+                opacity: 0; 
+                transform: translate(-50%, -60%);
+            }
+            to { 
+                opacity: 1; 
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        /* Mobile Responsive Styles */
         @media screen and (max-width: 768px) {
-            .search-container {
-                max-width: 200px;
-                margin: 0 1.5rem;
-            }
-
-            .search-bar input {
-                padding: 1rem 1.5rem;
-                font-size: 1rem;
-            }
-
-            .logo h1 {
-                font-size: 1rem;
-            }
-
             .slider-container {
                 height: 280px;
                 gap: 1.2rem;
+                padding: 0.5rem;
             }
             
             .song-slide {
                 min-width: 220px;
                 max-width: 220px;
+                height: 100%;
             }
             
             .song-slide img {
                 height: 160px;
+                object-fit: cover;
             }
             
             .song-title {
                 font-size: 1rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
             
             .song-artist {
                 font-size: 0.9rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .player-controls {
+                height: auto;
+                padding: 10px;
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .control-buttons {
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .progress-controls {
+                width: 100%;
+                padding: 0 10px;
+            }
+
+            .volume-controls {
+                justify-content: center;
+            }
+
+            .search-container {
+                max-width: 200px;
+                margin: 0 10px;
+            }
+
+            .search-bar input {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .upload-form {
+                padding: 15px;
+            }
+
+            .input-group input,
+            .input-group select {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            .upload-btn {
+                padding: 12px;
+                font-size: 14px;
             }
         }
 
         @media screen and (max-width: 480px) {
-            .search-container {
-                max-width: 180px;
-                margin: 0 1rem;
-            }
-
-            .search-bar input {
-                padding: 0.9rem 1.2rem;
-                font-size: 0.95rem;
-            }
-
-            .logo img {
-                width: 25px;
-                height: 25px;
-            }
-
-            .logo h1 {
-                font-size: 0.9rem;
-            }
-
             .slider-container {
                 height: 260px;
                 gap: 1rem;
@@ -856,19 +1072,23 @@
             .song-artist {
                 font-size: 0.85rem;
             }
+
+            .logo h1 {
+                font-size: 1rem;
+            }
+
+            .logo img {
+                width: 30px;
+                height: 30px;
+            }
+
+            .feedback-marquee {
+                top: 60px;
+                font-size: 14px;
+            }
         }
 
         @media screen and (max-width: 360px) {
-            .search-container {
-                max-width: 160px;
-                margin: 0 0.8rem;
-            }
-
-            .search-bar input {
-                padding: 0.8rem 1rem;
-                font-size: 0.9rem;
-            }
-
             .slider-container {
                 height: 240px;
                 gap: 0.8rem;
@@ -890,6 +1110,11 @@
             .song-artist {
                 font-size: 0.8rem;
             }
+
+            .feedback-marquee {
+                top: 50px;
+                font-size: 12px;
+            }
         }
 
         @keyframes fadeInUp {
@@ -901,6 +1126,39 @@
     </style>
 </head>
 <body>
+    <!-- Add Feedback Marquee -->
+    <div class="feedback-marquee" id="feedbackMarquee">
+        <div class="marquee-content">
+            <i class="fas fa-star"></i> Share your feedback with us! Click here to tell us how we're doing <i class="fas fa-star"></i>
+        </div>
+    </div>
+
+    <!-- Add Feedback Modal -->
+    <div class="feedback-modal" id="feedbackModal">
+        <button class="close-modal" id="closeModal">&times;</button>
+        <h3>Share Your Feedback</h3>
+        <form id="feedbackForm" action="https://formsubmit.co/kalkithedarkwar@gmail.com" method="POST">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_autoresponse" value="Thank you for your feedback! We appreciate your input.">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_next" value="https://yourdomain.com/thank-you.html">
+            <div class="input-group">
+                <textarea id="feedbackText" name="feedback" placeholder="Share your thoughts with us..." required></textarea>
+            </div>
+            <div class="input-group">
+                <select id="feedbackRating" name="rating" required>
+                    <option value="">How would you Like This?</option>
+                    <option value="5">Improve</option>
+                    <option value="4">Better</option>
+                    <option value="3">Nice</option>
+                    <option value="2">Good</option>
+                    <option value="1">Poor</option>
+                </select>
+            </div>
+            <button type="submit" class="upload-btn">Submit Feedback</button>
+        </form>
+    </div>
+
     <header>
         <div class="logo">
             <img src="https://res.cloudinary.com/dykzuljjr/image/upload/v1743437143/IMG_20250331_112437_oc200m.png" alt="Logo">
@@ -1516,6 +1774,45 @@
                     const walk = (x - startX) * 2;
                     slider.scrollLeft = scrollLeft - walk;
                 });
+            });
+        });
+
+        // Update feedback functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const feedbackMarquee = document.getElementById('feedbackMarquee');
+            const feedbackModal = document.getElementById('feedbackModal');
+            const feedbackForm = document.getElementById('feedbackForm');
+            const closeModal = document.getElementById('closeModal');
+
+            feedbackMarquee.addEventListener('click', () => {
+                feedbackModal.classList.add('active');
+            });
+
+            closeModal.addEventListener('click', () => {
+                feedbackModal.classList.remove('active');
+            });
+
+            feedbackForm.addEventListener('submit', (e) => {
+                // Submit form in background
+                const formData = new FormData(feedbackForm);
+                fetch(feedbackForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors'
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
+                
+                // Close modal and reset form
+                feedbackModal.classList.remove('active');
+                feedbackForm.reset();
+            });
+
+            // Close modal when clicking outside
+            document.addEventListener('click', (e) => {
+                if (e.target === feedbackModal) {
+                    feedbackModal.classList.remove('active');
+                }
             });
         });
     </script>
