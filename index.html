@@ -268,7 +268,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 
         // Firebase Config
         const firebaseConfig = {
@@ -283,6 +283,12 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        
+        // Set persistence to LOCAL to maintain session across browser restarts
+        setPersistence(auth, browserLocalPersistence)
+            .catch((error) => {
+                console.error("Error setting persistence:", error);
+            });
 
         // User activity tracking
         let lastActivityTime = Date.now();
@@ -293,124 +299,27 @@
             lastActivityTime = Date.now();
             // Store the last activity time in localStorage
             localStorage.setItem('lastActivityTime', lastActivityTime);
-        }
-
-        // Add activity listeners
-        document.addEventListener('mousemove', updateLastActivity);
-        document.addEventListener('keydown', updateLastActivity);
-        document.addEventListener('click', updateLastActivity);
-        document.addEventListener('scroll', updateLastActivity);
-
-        // Check for inactivity
-        setInterval(() => {
-            const currentTime = Date.now();
-            const storedTime = parseInt(localStorage.getItem('lastActivityTime') || '0');
-            
-            // Only check inactivity if we have a stored time
-            if (storedTime > 0 && currentTime - storedTime > INACTIVITY_TIMEOUT) {
-                // User is inactive, clear session
-                auth.signOut().then(() => {
-                    localStorage.removeItem('lastActivityTime');
-                    showLogin();
-                    document.getElementById('loginError').textContent = "Session expired due to inactivity. Please login again.";
-                });
+            // Store device ID for persistence
+            if (!localStorage.getItem('deviceId')) {
+                localStorage.setItem('deviceId', generateDeviceId());
             }
-        }, 60000); // Check every minute
-
-        // DOM Elements
-        const loginForm = document.getElementById('loginForm');
-        const registerForm = document.getElementById('registerForm');
-        const forgotForm = document.getElementById('forgotForm');
-
-        // Form visibility functions
-        function showRegister() {
-            const loginContainer = document.getElementById('loginContainer');
-            const registerContainer = document.getElementById('registerContainer');
-            const forgotContainer = document.getElementById('forgotContainer');
-            
-            loginContainer.style.display = 'none';
-            registerContainer.style.display = 'block';
-            forgotContainer.style.display = 'none';
-            
-            // Clear any error messages
-            document.getElementById('registerError').textContent = '';
-            document.getElementById('registerUsername').value = '';
-            document.getElementById('registerPassword').value = '';
-            
-            document.getElementById('registerUsername').focus();
         }
 
-        function showForgotPassword() {
-            const loginContainer = document.getElementById('loginContainer');
-            const registerContainer = document.getElementById('registerContainer');
-            const forgotContainer = document.getElementById('forgotContainer');
-            
-            loginContainer.style.display = 'none';
-            registerContainer.style.display = 'none';
-            forgotContainer.style.display = 'block';
-            
-            // Clear any error messages
-            document.getElementById('forgotError').textContent = '';
-            document.getElementById('forgotUsername').value = '';
-            
-            document.getElementById('forgotUsername').focus();
-        }
-
-        function showLogin() {
-            const loginContainer = document.getElementById('loginContainer');
-            const registerContainer = document.getElementById('registerContainer');
-            const forgotContainer = document.getElementById('forgotContainer');
-            
-            loginContainer.style.display = 'block';
-            registerContainer.style.display = 'none';
-            forgotContainer.style.display = 'none';
-            
-            // Clear any error messages
-            document.getElementById('loginError').textContent = '';
-            document.getElementById('loginUsername').value = '';
-            document.getElementById('loginPassword').value = '';
-            
-            document.getElementById('loginUsername').focus();
-        }
-
-        // Add click event listeners for the links
-        document.addEventListener('DOMContentLoaded', () => {
-            // Register link
-            const registerLink = document.querySelector('a[onclick="showRegister()"]');
-            if (registerLink) {
-                registerLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    showRegister();
-                });
-            }
-            
-            // Forgot password link
-            const forgotLink = document.querySelector('a[onclick="showForgotPassword()"]');
-            if (forgotLink) {
-                forgotLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    showForgotPassword();
-                });
-            }
-            
-            // Back to login links (multiple)
-            const backToLoginLinks = document.querySelectorAll('a[onclick="showLogin()"]');
-            backToLoginLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    showLogin();
-                });
+        // Generate a unique device ID
+        function generateDeviceId() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
             });
-
-            // Initialize with login form
-            showLogin();
-        });
+        }
 
         // Check for existing session
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // Get stored activity time
+                // Get stored activity time and device ID
                 const storedTime = parseInt(localStorage.getItem('lastActivityTime') || '0');
+                const storedDeviceId = localStorage.getItem('deviceId');
                 const currentTime = Date.now();
                 
                 // Only clear session if user is inactive and we have a stored time
@@ -423,6 +332,10 @@
                 } else {
                     // Update activity time if session is still valid
                     updateLastActivity();
+                    // Redirect to access page if not already there
+                    if (!window.location.pathname.includes('access.html')) {
+                        window.location.replace("access.html");
+                    }
                 }
             } else {
                 // If not authenticated, ensure we're on the login page
@@ -445,7 +358,14 @@
             
             // Check Firebase authentication state
             auth.onAuthStateChanged((user) => {
-                if (!user) {
+                if (user) {
+                    // If authenticated and within timeout, redirect to access page
+                    const currentTime = Date.now();
+                    const storedTime = parseInt(localStorage.getItem('lastActivityTime') || '0');
+                    if (currentTime - storedTime <= INACTIVITY_TIMEOUT) {
+                        window.location.replace("access.html");
+                    }
+                } else {
                     // If not authenticated, ensure we're on the login page
                     if (window.location.pathname.includes('access.html')) {
                         window.location.href = "index.html";
