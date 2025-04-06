@@ -284,6 +284,39 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
+        // User activity tracking
+        let lastActivityTime = Date.now();
+        const INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutes in milliseconds
+
+        // Track user activity
+        function updateLastActivity() {
+            lastActivityTime = Date.now();
+            // Store the last activity time in localStorage
+            localStorage.setItem('lastActivityTime', lastActivityTime);
+        }
+
+        // Add activity listeners
+        document.addEventListener('mousemove', updateLastActivity);
+        document.addEventListener('keydown', updateLastActivity);
+        document.addEventListener('click', updateLastActivity);
+        document.addEventListener('scroll', updateLastActivity);
+
+        // Check for inactivity
+        setInterval(() => {
+            const currentTime = Date.now();
+            const storedTime = parseInt(localStorage.getItem('lastActivityTime') || '0');
+            
+            // Only check inactivity if we have a stored time
+            if (storedTime > 0 && currentTime - storedTime > INACTIVITY_TIMEOUT) {
+                // User is inactive, clear session
+                auth.signOut().then(() => {
+                    localStorage.removeItem('lastActivityTime');
+                    showLogin();
+                    document.getElementById('loginError').textContent = "Session expired due to inactivity. Please login again.";
+                });
+            }
+        }, 60000); // Check every minute
+
         // DOM Elements
         const loginForm = document.getElementById('loginForm');
         const registerForm = document.getElementById('registerForm');
@@ -376,14 +409,21 @@
         // Check for existing session
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // Clear any stored credentials
-                localStorage.removeItem('isLoggedIn');
-                localStorage.removeItem('userEmail');
-                localStorage.removeItem('lastLoginDate');
+                // Get stored activity time
+                const storedTime = parseInt(localStorage.getItem('lastActivityTime') || '0');
+                const currentTime = Date.now();
                 
-                // Force user to login again
-                showLogin();
-                document.getElementById('loginError').textContent = "Session expired. Please login again.";
+                // Only clear session if user is inactive and we have a stored time
+                if (storedTime > 0 && currentTime - storedTime > INACTIVITY_TIMEOUT) {
+                    auth.signOut().then(() => {
+                        localStorage.removeItem('lastActivityTime');
+                        showLogin();
+                        document.getElementById('loginError').textContent = "Session expired due to inactivity. Please login again.";
+                    });
+                } else {
+                    // Update activity time if session is still valid
+                    updateLastActivity();
+                }
             } else {
                 // If not authenticated, ensure we're on the login page
                 if (window.location.pathname.includes('access.html')) {
@@ -392,12 +432,16 @@
             }
         });
 
-        // Clear any stored credentials on page load
+        // Initialize on page load
         window.addEventListener('load', () => {
-            // Always clear stored credentials
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userEmail');
-            localStorage.removeItem('lastLoginDate');
+            // Initialize last activity time
+            const storedTime = parseInt(localStorage.getItem('lastActivityTime') || '0');
+            if (storedTime > 0) {
+                lastActivityTime = storedTime;
+            } else {
+                lastActivityTime = Date.now();
+                localStorage.setItem('lastActivityTime', lastActivityTime);
+            }
             
             // Check Firebase authentication state
             auth.onAuthStateChanged((user) => {
@@ -408,6 +452,12 @@
                     }
                 }
             });
+        });
+
+        // Handle browser/tab close
+        window.addEventListener('beforeunload', () => {
+            // Store the current activity time
+            localStorage.setItem('lastActivityTime', Date.now());
         });
 
         // Login form submission
@@ -425,9 +475,8 @@
 
             try {
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                
-                // Don't store credentials in localStorage
-                // Only redirect if authentication is successful
+                // Store login time
+                updateLastActivity();
                 window.location.replace("access.html");
             } catch (error) {
                 let errorMessage = "Login failed!";
