@@ -1,9 +1,9 @@
 {
     "name": "RoyalStar Music",
     "short_name": "RoyalStar",
-    "description": "A modern music player with notifications support",
-    "start_url": "/royalofillegal.onion/songs",
-    "scope": "/royalofillegal.onion/",
+    "description": "A music player with notifications support",
+    "start_url": "/access.html",
+    "scope": "/",
     "display": "standalone",
     "background_color": "#121212",
     "theme_color": "#9333ea",
