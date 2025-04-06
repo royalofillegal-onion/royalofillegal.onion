@@ -8,7 +8,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Quicksand', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
         body { 
             display: flex; 
             justify-content: center; 
@@ -17,6 +24,7 @@
             background: linear-gradient(45deg, #1a1a1a, #2d1b3b);
             overflow: hidden;
             position: relative;
+            -webkit-overflow-scrolling: touch;
         }
         .background {
             position: fixed;
@@ -45,7 +53,7 @@
             width: 90%; 
             max-width: 400px;
             background: rgba(34, 34, 34, 0.8); 
-            padding: 30px; 
+            padding: 20px; 
             border-radius: 4px; 
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9); 
             text-align: center;
@@ -55,6 +63,8 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(155, 89, 182, 0.2);
             margin: 20px auto;
+            transform: translateZ(0);
+            will-change: transform;
         }
         h2 { 
             color: #9b59b6; 
@@ -66,7 +76,7 @@
         }
         .inputBox { 
             position: relative; 
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             animation: slideUp 0.5s ease-out;
         }
         .inputBox input { 
@@ -77,7 +87,9 @@
             color: #fff; 
             border-radius: 4px;
             transition: all 0.3s ease;
-            font-size: 1em;
+            font-size: 16px; /* Prevent zoom on iOS */
+            -webkit-appearance: none;
+            appearance: none;
         }
         .inputBox input:focus {
             outline: none;
@@ -93,6 +105,7 @@
             border: none;
             text-transform: uppercase;
             letter-spacing: 1px;
+            -webkit-tap-highlight-color: transparent;
         }
         .inputBox input[type="submit"]:hover {
             background: linear-gradient(45deg, #8e44ad, #9b59b6);
@@ -155,11 +168,13 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 150px;
-            height: 200px;
+            width: 100px; /* Reduced size for mobile */
+            height: 150px; /* Reduced size for mobile */
             z-index: 2;
             cursor: pointer;
             transition: all 0.3s ease;
+            transform: translateZ(0);
+            will-change: transform;
         }
         .boy-body {
             position: absolute;
@@ -268,6 +283,62 @@
         }
         .boy-character:hover .speech-bubble {
             display: block;
+        }
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 10px auto;
+            }
+            
+            h2 {
+                font-size: 2em;
+                margin-bottom: 15px;
+            }
+            
+            .inputBox {
+                margin-bottom: 12px;
+            }
+            
+            .inputBox input {
+                padding: 10px;
+                font-size: 16px;
+            }
+            
+            .links {
+                flex-direction: column;
+                gap: 10px;
+                margin-bottom: 15px;
+            }
+            
+            .boy-character {
+                width: 80px;
+                height: 120px;
+                bottom: 10px;
+                right: 10px;
+            }
+            
+            .speech-bubble {
+                width: 150px;
+                padding: 10px;
+                font-size: 0.9em;
+            }
+        }
+        @media screen and (max-width: 480px) {
+            .container {
+                padding: 12px;
+            }
+            
+            h2 {
+                font-size: 1.8em;
+            }
+            
+            .inputBox input {
+                padding: 8px;
+            }
+            
+            .boy-character {
+                display: none; /* Hide on very small screens */
+            }
         }
     </style>
 </head>
@@ -689,6 +760,62 @@
             const x = e.clientX / window.innerWidth;
             const y = e.clientY / window.innerHeight;
             container.style.transform = `perspective(1000px) rotateX(${(y - 0.5) * 5}deg) rotateY(${(x - 0.5) * 5}deg)`;
+        });
+
+        // Optimize mobile performance
+        document.addEventListener('DOMContentLoaded', () => {
+            // Disable scroll on input focus
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    document.body.style.overflow = 'hidden';
+                });
+                input.addEventListener('blur', () => {
+                    document.body.style.overflow = '';
+                });
+            });
+
+            // Optimize touch events
+            const container = document.querySelector('.container');
+            let touchStartX = 0;
+            let touchStartY = 0;
+
+            container.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+
+            container.addEventListener('touchmove', (e) => {
+                e.preventDefault(); // Prevent default scrolling
+            }, { passive: false });
+
+            // Optimize animations for mobile
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefersReducedMotion) {
+                document.body.classList.add('reduced-motion');
+            }
+
+            // Handle virtual keyboard
+            window.addEventListener('resize', () => {
+                if (document.activeElement.tagName === 'INPUT') {
+                    document.activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+
+            // Optimize form submission
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const submitButton = form.querySelector('input[type="submit"]');
+                    if (submitButton) {
+                        submitButton.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            submitButton.style.transform = 'scale(1)';
+                        }, 100);
+                    }
+                });
+            });
         });
     </script>
 </body>
