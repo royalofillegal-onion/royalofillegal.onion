@@ -1,11 +1,11 @@
 // Service Worker for handling notifications
 const CACHE_NAME = 'royalofillegal-music-v1';
 const ASSETS_TO_CACHE = [
-    '/royalofillegal.onion/',
-    '/royalofillegal.onion/songs',
-    '/royalofillegal.onion/index.html',
-    '/royalofillegal.onion/manifest.json',
-    '/royalofillegal.onion/sw.js'
+    '/',
+    '/index.html',
+    '/access.html',
+    '/manifest.json',
+    '/sw.js'
 ];
 
 self.addEventListener('install', (event) => {
