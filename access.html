@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RoyalStar Music</title>
+    <link rel="manifest" href="/royalofillegal.onion/manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -1804,11 +1805,11 @@
             // Then sign out from Firebase
             signOut(auth).then(() => {
                 // Force redirect to login page
-                window.location.replace("index.html");
+                window.location.replace("/royalofillegal.onion/index.html");
             }).catch((error) => {
                 console.error('Error signing out:', error);
                 // Force redirect even if there's an error
-                window.location.replace("index.html");
+                window.location.replace("/royalofillegal.onion/index.html");
             });
         });
 
@@ -1982,7 +1983,28 @@
             ]
         };
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Register service worker for notifications
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.register('/royalofillegal.onion/sw.js', {
+                        scope: '/royalofillegal.onion/'
+                    });
+                    console.log('ServiceWorker registration successful with scope:', registration.scope);
+                } catch (err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                }
+            }
+
+            // Request notification permission
+            if ('Notification' in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        console.log('Notification permission granted');
+                    }
+                });
+            }
+
             let currentSongIndex = 0;
             let isPlaying = false;
             let isShuffled = false;
@@ -2293,6 +2315,16 @@
                 document.getElementById('current-artist').textContent = song.artist;
                 document.getElementById('current-album-art').src = song.cover;
                 audio.src = song.audio;
+
+                // Show notification for the current song
+                if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                    navigator.serviceWorker.controller.postMessage({
+                        type: 'SHOW_NOTIFICATION',
+                        title: song.title,
+                        artist: song.artist,
+                        cover: song.cover
+                    });
+                }
             }
 
             function togglePlay() {
@@ -2556,6 +2588,17 @@
 
             initializeSliders();
             setupEventListeners();
+
+            // Add message event listener for service worker
+            navigator.serviceWorker.addEventListener('message', (event) => {
+                if (event.data.type === 'TOGGLE_PLAY') {
+                    togglePlay();
+                } else if (event.data.type === 'NEXT_SONG') {
+                    document.getElementById('next').click();
+                } else if (event.data.type === 'PREV_SONG') {
+                    document.getElementById('prev').click();
+                }
+            });
         });
 
         // Update feedback functionality
