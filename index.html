@@ -411,48 +411,145 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 9999;
             transition: all 0.5s ease;
+            padding: 20px;
+            overflow: hidden;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            will-change: transform;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
         .lock-container {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 40px;
-            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 30px;
+            border-radius: 15px;
             text-align: center;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            width: 90%;
+            max-width: 400px;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            will-change: transform;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
         .lock-icon {
-            font-size: 5em;
+            font-size: 4em;
             color: #fff;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             animation: pulse 2s infinite;
         }
         .timer {
-            font-size: 2em;
+            font-size: 1.8em;
             color: #fff;
             font-weight: bold;
-            margin: 20px 0;
+            margin: 15px 0;
             text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            word-break: break-word;
         }
         .date {
-            font-size: 1.5em;
+            font-size: 1.3em;
             color: #fff;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .message {
             color: #fff;
-            font-size: 1.2em;
-            max-width: 400px;
+            font-size: 1.1em;
+            max-width: 100%;
             margin: 0 auto;
+            line-height: 1.4;
         }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        @media screen and (max-width: 768px) {
+            .lock-screen {
+                padding: 15px;
+            }
+            .lock-container {
+                padding: 25px;
+                border-radius: 12px;
+            }
+            .lock-icon {
+                font-size: 3.5em;
+                margin-bottom: 12px;
+            }
+            .timer {
+                font-size: 1.5em;
+                margin: 12px 0;
+            }
+            .date {
+                font-size: 1.2em;
+                margin-bottom: 12px;
+            }
+            .message {
+                font-size: 1em;
+            }
+        }
+        @media screen and (max-width: 480px) {
+            .lock-screen {
+                padding: 10px;
+            }
+            .lock-container {
+                padding: 20px;
+                border-radius: 10px;
+            }
+            .lock-icon {
+                font-size: 3em;
+                margin-bottom: 10px;
+            }
+            .timer {
+                font-size: 1.3em;
+                margin: 10px 0;
+            }
+            .date {
+                font-size: 1.1em;
+                margin-bottom: 10px;
+            }
+            .message {
+                font-size: 0.9em;
+            }
+        }
+        @media screen and (max-width: 360px) {
+            .lock-screen {
+                padding: 8px;
+            }
+            .lock-container {
+                padding: 15px;
+            }
+            .lock-icon {
+                font-size: 2.5em;
+            }
+            .timer {
+                font-size: 1.1em;
+            }
+            .date {
+                font-size: 1em;
+            }
+            .message {
+                font-size: 0.85em;
+            }
         }
         .hidden {
             display: none !important;
+        }
+        .background, .particles, .netflix-logo, .eagle, .fire, .container {
+            display: none;
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .lock-screen.active ~ .background,
+        .lock-screen.active ~ .particles,
+        .lock-screen.active ~ .netflix-logo,
+        .lock-screen.active ~ .eagle,
+        .lock-screen.active ~ .fire,
+        .lock-screen.active ~ .container {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
         }
     </style>
 </head>
@@ -1006,8 +1103,14 @@
             const distance = targetDate - now;
 
             if (distance <= 0) {
-                // If countdown is over, hide the lock screen
+                // If countdown is over, hide the lock screen and show the login form
                 lockScreen.classList.add('hidden');
+                document.querySelectorAll('.background, .particles, .netflix-logo, .eagle, .fire, .container').forEach(el => {
+                    el.style.display = '';
+                    el.style.visibility = '';
+                    el.style.opacity = '';
+                    el.style.pointerEvents = '';
+                });
                 return;
             }
 
@@ -1029,7 +1132,13 @@
 
         // Check if we should show the lock screen
         if (new Date().getTime() < targetDate) {
-            lockScreen.classList.remove('hidden');
+            lockScreen.classList.add('active');
+            document.querySelectorAll('.background, .particles, .netflix-logo, .eagle, .fire, .container').forEach(el => {
+                el.style.display = 'none';
+                el.style.visibility = 'hidden';
+                el.style.opacity = '0';
+                el.style.pointerEvents = 'none';
+            });
         } else {
             lockScreen.classList.add('hidden');
         }
