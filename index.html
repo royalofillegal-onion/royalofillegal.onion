@@ -1,251 +1,1038 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Status 404 - Offline</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background-color: black;
-      color: white;
-      text-align: center;
-      height: 100vh;
-    }
-
-    .screen {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .screen.active {
-      display: flex;
-    }
-
-    #startScreen h1 {
-      font-size: 48px;
-      margin-bottom: 10px;
-    }
-
-    #startScreen p {
-      font-size: 20px;
-      margin-bottom: 30px;
-    }
-
-    #startScreen button {
-      padding: 12px 30px;
-      font-size: 18px;
-      background-color: red;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    #footer {
-      position: absolute;
-      bottom: 20px;
-      font-size: 18px;
-      color: #999;
-    }
-
-    #gameScreen h1 {
-      margin-top: 20px;
-      font-size: 30px;
-    }
-
-    #gameBoard {
-      display: grid;
-      grid-template-columns: repeat(3, 100px);
-      grid-gap: 10px;
-      justify-content: center;
-      margin: 20px auto;
-    }
-
-    .cell {
-      width: 100px;
-      height: 100px;
-      background-color: #222;
-      font-size: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      border-radius: 8px;
-      user-select: none;
-    }
-
-    .cell:hover {
-      background-color: #333;
-    }
-
-    #status, #scoreboard {
-      margin-top: 20px;
-      font-size: 18px;
-    }
-
-    #playAgain {
-      margin-top: 20px;
-      padding: 10px 30px;
-      font-size: 18px;
-      border: none;
-      background-color: #f00;
-      color: white;
-      border-radius: 5px;
-      cursor: pointer;
-      display: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Quicksand', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        body { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            background: linear-gradient(45deg, #1a1a1a, #2d1b3b);
+            overflow: hidden;
+            position: relative;
+            -webkit-overflow-scrolling: touch;
+        }
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, rgba(155, 89, 182, 0.1) 0%, rgba(0, 0, 0, 0.8) 100%);
+        }
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #9b59b6;
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 90%;
+            max-width: 380px;
+            background: rgba(34, 34, 34, 0.95);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9);
+            position: relative;
+            z-index: 1;
+            border: 2px solid #9b59b6;
+            margin: 15px auto;
+            backdrop-filter: blur(10px);
+            transform: translateZ(0);
+            will-change: transform;
+            transition: all 0.3s ease;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .red-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(90deg, #ff0000, #cc0000);
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        .brand-name {
+            color: #fff;
+            font-size: 1.4em;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px;
+            animation: glow 2s infinite alternate;
+        }
+        .form-header {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 25px;
+        }
+        .form-header h2 {
+            color: #fff;
+            font-size: 2em;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(155, 89, 182, 0.9);
+            animation: glow 2s infinite alternate;
+        }
+        .form-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .form-group label {
+            color: #fff;
+            font-size: 1em;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .inputBox {
+            position: relative;
+            width: 100%;
+            animation: slideUp 0.5s ease-out;
+        }
+        .inputBox input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(51, 51, 51, 0.8);
+            border: 2px solid #9b59b6;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .inputBox input:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(155, 89, 182, 0.5);
+            border-color: #9b59b6;
+        }
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .form-switch {
+            display: flex;
+            gap: 15px;
+        }
+        .form-switch a {
+            color: #9b59b6;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9em;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            background: rgba(155, 89, 182, 0.1);
+            border: 1px solid rgba(155, 89, 182, 0.3);
+        }
+        .form-switch a:hover {
+            color: #fff;
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(155, 89, 182, 0.4);
+        }
+        .submit-section {
+            margin-top: 20px;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        .submit-btn:hover {
+            background: linear-gradient(45deg, #8e44ad, #9b59b6);
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(155, 89, 182, 0.6);
+        }
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+        .submit-btn.register {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+        }
+        .submit-btn.register:hover {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            box-shadow: 0 0 20px rgba(46, 204, 113, 0.6);
+        }
+        .submit-btn.forgot {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+        }
+        .submit-btn.forgot:hover {
+            background: linear-gradient(45deg, #2980b9, #3498db);
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.6);
+        }
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 1em;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        .error {
+            color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.15);
+            border: 2px solid rgba(255, 107, 107, 0.4);
+            animation: shake 0.5s ease-in-out;
+        }
+        .success {
+            color: #2ecc71;
+            background: rgba(46, 204, 113, 0.15);
+            border: 2px solid rgba(46, 204, 113, 0.4);
+        }
+        .info {
+            color: #3498db;
+            background: rgba(52, 152, 219, 0.15);
+            border: 2px solid rgba(52, 152, 219, 0.4);
+        }
+        .password-container {
+            position: relative;
+            width: 100%;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #9b59b6;
+            cursor: pointer;
+            padding: 8px;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px rgba(155, 89, 182, 0.5);
+        }
+        .password-toggle:hover {
+            color: #8e44ad;
+            transform: translateY(-50%) scale(1.2);
+            text-shadow: 0 0 15px rgba(155, 89, 182, 0.8);
+        }
+        .netflix-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #9b59b6;
+            font-size: 2em;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(155, 89, 182, 0.5);
+            animation: pulse 2s infinite;
+        }
+        .eagle {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%239b59b6" d="M12,2L2,7L12,12L22,7L12,2M2,17L12,22L22,17L12,12L2,17Z"/></svg>') no-repeat center center;
+            background-size: contain;
+            animation: fly 20s linear infinite;
+            z-index: 0;
+        }
+        .fire {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #9b59b6;
+            border-radius: 50%;
+            filter: blur(5px);
+            animation: fire 1s infinite alternate;
+            display: none;
+        }
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-20px) translateX(10px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        @keyframes fly {
+            0% { transform: translateX(-100px) translateY(0); }
+            50% { transform: translateX(calc(100vw + 100px)) translateY(-100px); }
+            100% { transform: translateX(-100px) translateY(0); }
+        }
+        @keyframes fire {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.5); opacity: 1; }
+        }
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px rgba(155, 89, 182, 0.5); }
+            100% { text-shadow: 0 0 20px rgba(155, 89, 182, 0.8); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px auto;
+            }
+            .form-header h2 {
+                font-size: 1.8em;
+            }
+            .form-actions {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .form-switch {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .form-switch a {
+                padding: 6px 10px;
+                font-size: 0.85em;
+            }
+        }
+        @media screen and (max-width: 480px) {
+            .container {
+                padding: 15px;
+                max-width: 320px;
+            }
+            .red-bar {
+                height: 35px;
+            }
+            .brand-name {
+                font-size: 1.2em;
+            }
+            .form-header h2 {
+                font-size: 1.6em;
+            }
+            .inputBox input {
+                padding: 10px;
+                font-size: 0.95em;
+            }
+            .submit-btn {
+                padding: 12px;
+                font-size: 1em;
+            }
+            .form-group label {
+                font-size: 0.9em;
+            }
+        }
+        @media screen and (max-width: 360px) {
+            .container {
+                padding: 12px;
+                max-width: 280px;
+            }
+            .red-bar {
+                height: 30px;
+            }
+            .brand-name {
+                font-size: 1em;
+            }
+            .form-header h2 {
+                font-size: 1.4em;
+            }
+            .form-switch a {
+                padding: 5px 8px;
+                font-size: 0.8em;
+            }
+        }
+        .lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ffd700, #ff0000);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.5s ease;
+        }
+        .lock-container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+        .lock-icon {
+            font-size: 5em;
+            color: #fff;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        .timer {
+            font-size: 2em;
+            color: #fff;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .date {
+            font-size: 1.5em;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .message {
+            color: #fff;
+            font-size: 1.2em;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
 </head>
-<body>
-  <!-- Start Screen -->
-  <div id="startScreen" class="screen active">
-    <div>
-      <h1>Status 404</h1>
-      <p>No internet connection or site updating</p>
-      <button onclick="startGame()">Click to Play</button>
+<body> 
+    <div class="lock-screen" id="lockScreen">
+        <div class="lock-container">
+            <div class="lock-icon">🔒</div>
+            <div class="timer" id="countdown"></div>
+            <div class="date">Until April 25, 2025</div>
+            <div class="message">This site will be available after the countdown ends. Please check back later.</div>
+        </div>
     </div>
-    <div id="footer">Made by ⱤØɎ₳Ⱡ₴₮₳Ɽ</div>
-  </div>
 
-  <!-- Game Screen -->
-  <div id="gameScreen" class="screen">
-    <h1>Tic-Tac-Toe vs Computer</h1>
-    <div id="gameBoard"></div>
-    <div id="status">Your turn (X)</div>
-    <div id="scoreboard">
-      You (X): <span id="xWins">0</span> |
-      Computer (O): <span id="oWins">0</span> |
-      Draws: <span id="draws">0</span> |
-      Games: <span id="gamesPlayed">0</span>
+    <div class="background"></div>
+    <div class="particles"></div>
+    <div class="netflix-logo">ROYALSTAR</div>
+    <div class="eagle"></div>
+    <div class="fire"></div>
+
+    <!-- Login Form -->
+    <div class="container" id="loginContainer">
+        <div class="red-bar">
+            <div class="brand-name">ⱤØɎ₳Ⱡ₴₮₳Ɽ</div>
+        </div>
+        <div class="form-header">
+            <h2>Login</h2>
+        </div>
+        <div class="message error" id="loginError"></div>
+        <form id="loginForm">
+            <div class="form-content">
+                <div class="form-group">
+                    <label for="loginUsername">Email</label>
+                    <div class="inputBox">
+                        <input type="text" id="loginUsername" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <div class="password-container">
+                        <div class="inputBox">
+                            <input type="password" id="loginPassword" required>
+                        </div>
+                        <button type="button" class="password-toggle">👁️</button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="form-switch">
+                    <a href="javascript:void(0);" onclick="showForgotPassword()">Forgot Password?</a>
+                    <a href="javascript:void(0);" onclick="showRegister()">Register</a>
+                </div>
+            </div>
+            <div class="submit-section">
+                <input type="submit" class="submit-btn" value="Login">
+            </div>
+        </form>
     </div>
-    <button id="playAgain">Play Again</button>
-  </div>
+    
+    <!-- Register Form -->
+    <div class="container" id="registerContainer" style="display: none;">
+        <div class="red-bar">
+            <div class="brand-name">ⱤØɎ₳Ⱡ₴₮₳Ɽ</div>
+        </div>
+        <div class="form-header">
+            <h2>Register</h2>
+        </div>
+        <div class="message error" id="registerError"></div>
+        <form id="registerForm">
+            <div class="form-content">
+                <div class="form-group">
+                    <label for="registerUsername">Email</label>
+                    <div class="inputBox">
+                        <input type="text" id="registerUsername" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <div class="password-container">
+                        <div class="inputBox">
+                            <input type="password" id="registerPassword" required>
+                        </div>
+                        <button type="button" class="password-toggle">👁️</button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="form-switch">
+                    <a href="javascript:void(0);" onclick="showLogin()">Back to Login</a>
+                </div>
+            </div>
+            <div class="submit-section">
+                <input type="submit" class="submit-btn register" value="Register">
+            </div>
+        </form>
+    </div>
+    
+    <!-- Forgot Password Form -->
+    <div class="container" id="forgotContainer" style="display: none;">
+        <div class="red-bar">
+            <div class="brand-name">ⱤØɎ₳Ⱡ₴₮₳Ɽ</div>
+        </div>
+        <div class="form-header">
+            <h2>Forgot Password</h2>
+        </div>
+        <div class="message error" id="forgotError"></div>
+        <form id="forgotForm">
+            <div class="form-content">
+                <div class="form-group">
+                    <label for="forgotUsername">Email</label>
+                    <div class="inputBox">
+                        <input type="text" id="forgotUsername" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="form-switch">
+                    <a href="javascript:void(0);" onclick="showLogin()">Back to Login</a>
+                </div>
+            </div>
+            <div class="submit-section">
+                <input type="submit" class="submit-btn forgot" value="Reset Password">
+            </div>
+        </form>
+    </div>
 
-  <script>
-    function startGame() {
-      document.getElementById('startScreen').classList.remove('active');
-      document.getElementById('gameScreen').classList.add('active');
-      initGame();
-    }
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 
-    const board = document.getElementById("gameBoard");
-    const statusText = document.getElementById("status");
-    const xWinsDisplay = document.getElementById("xWins");
-    const oWinsDisplay = document.getElementById("oWins");
-    const drawsDisplay = document.getElementById("draws");
-    const gamesPlayedDisplay = document.getElementById("gamesPlayed");
-    const playAgainButton = document.getElementById("playAgain");
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAaQDKLlmT3zYC5ww3rxiul_FB7HfviZUA",
+            authDomain: "royalstar-d6a4e.firebaseapp.com",
+            projectId: "royalstar-d6a4e",
+            storageBucket: "royalstar-d6a4e.firebasestorage.app",
+            messagingSenderId: "796910377639",
+            appId: "1:796910377639:web:f8de8945e558fb9868d982",
+        };
 
-    let cells = [];
-    let elements = [];
-    let currentPlayer = "X"; // Player
-    let gameOver = false;
-    let xWins = 0;
-    let oWins = 0;
-    let draws = 0;
-    let gamesPlayed = 0;
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-    function initGame() {
-      board.innerHTML = "";
-      cells = Array(9).fill("");
-      elements = [];
-      for (let i = 0; i < 9; i++) {
-        const cell = document.createElement("div");
-        cell.classList.add("cell");
-        cell.addEventListener("click", () => handleMove(cell, i));
-        board.appendChild(cell);
-        elements.push(cell);
-      }
-      currentPlayer = "X";
-      gameOver = false;
-      statusText.textContent = "Your turn (X)";
-      playAgainButton.style.display = "none";
-    }
+        // User activity tracking
+        let lastActivityTime = Date.now();
+        const INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutes in milliseconds
 
-    function handleMove(cell, index) {
-      if (cells[index] || gameOver || currentPlayer !== "X") return;
+        // Track user activity
+        function updateLastActivity() {
+            lastActivityTime = Date.now();
+            // Store the last activity time in localStorage
+            localStorage.setItem('lastActivityTime', lastActivityTime);
+        }
 
-      cells[index] = "X";
-      cell.textContent = "X";
+        // Add activity listeners
+        document.addEventListener('mousemove', updateLastActivity);
+        document.addEventListener('keydown', updateLastActivity);
+        document.addEventListener('click', updateLastActivity);
+        document.addEventListener('scroll', updateLastActivity);
 
-      if (checkWin("X")) {
-        endGame("You win!");
-        xWins++;
-      } else if (cells.every(cell => cell !== "")) {
-        endGame("It's a draw!");
-        draws++;
-      } else {
-        currentPlayer = "O";
-        statusText.textContent = "Computer's turn (O)";
-        setTimeout(computerMove, 500); // Delay for realism
-      }
-      updateScore();
-    }
+        // Check for inactivity
+        setInterval(() => {
+            const currentTime = Date.now();
+            const storedTime = parseInt(localStorage.getItem('lastActivityTime') || '0');
+            
+            // Only check inactivity if we have a stored time
+            if (storedTime > 0 && currentTime - storedTime > INACTIVITY_TIMEOUT) {
+                // User is inactive, clear session
+                auth.signOut().then(() => {
+                    localStorage.removeItem('lastActivityTime');
+                    showLogin();
+                    document.getElementById('loginError').textContent = "Session expired due to inactivity. Please login again.";
+                });
+            }
+        }, 60000); // Check every minute
 
-    function computerMove() {
-      if (gameOver) return;
+        // DOM Elements
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const forgotForm = document.getElementById('forgotForm');
 
-      // Basic AI: choose first empty cell
-      let emptyIndexes = cells
-        .map((val, idx) => val === "" ? idx : null)
-        .filter(val => val !== null);
+        // Form visibility functions
+        function showRegister() {
+            const loginContainer = document.getElementById('loginContainer');
+            const registerContainer = document.getElementById('registerContainer');
+            const forgotContainer = document.getElementById('forgotContainer');
+            
+            loginContainer.style.display = 'none';
+            registerContainer.style.display = 'block';
+            forgotContainer.style.display = 'none';
+            
+            // Clear any error messages
+            document.getElementById('registerError').textContent = '';
+            document.getElementById('registerUsername').value = '';
+            document.getElementById('registerPassword').value = '';
+            
+            document.getElementById('registerUsername').focus();
+        }
 
-      if (emptyIndexes.length === 0) return;
+        function showForgotPassword() {
+            const loginContainer = document.getElementById('loginContainer');
+            const registerContainer = document.getElementById('registerContainer');
+            const forgotContainer = document.getElementById('forgotContainer');
+            
+            loginContainer.style.display = 'none';
+            registerContainer.style.display = 'none';
+            forgotContainer.style.display = 'block';
+            
+            // Clear any error messages
+            document.getElementById('forgotError').textContent = '';
+            document.getElementById('forgotUsername').value = '';
+            
+            document.getElementById('forgotUsername').focus();
+        }
 
-      let move = emptyIndexes[Math.floor(Math.random() * emptyIndexes.length)];
-      cells[move] = "O";
-      elements[move].textContent = "O";
+        function showLogin() {
+            const loginContainer = document.getElementById('loginContainer');
+            const registerContainer = document.getElementById('registerContainer');
+            const forgotContainer = document.getElementById('forgotContainer');
+            
+            loginContainer.style.display = 'block';
+            registerContainer.style.display = 'none';
+            forgotContainer.style.display = 'none';
+            
+            // Clear any error messages
+            document.getElementById('loginError').textContent = '';
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+            
+            document.getElementById('loginUsername').focus();
+        }
 
-      if (checkWin("O")) {
-        endGame("Computer wins!");
-        oWins++;
-      } else if (cells.every(cell => cell !== "")) {
-        endGame("It's a draw!");
-        draws++;
-      } else {
-        currentPlayer = "X";
-        statusText.textContent = "Your turn (X)";
-      }
-      updateScore();
-    }
+        // Add click event listeners for the links
+        document.addEventListener('DOMContentLoaded', () => {
+            // Register link
+            const registerLink = document.querySelector('a[onclick="showRegister()"]');
+            if (registerLink) {
+                registerLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showRegister();
+                });
+            }
+            
+            // Forgot password link
+            const forgotLink = document.querySelector('a[onclick="showForgotPassword()"]');
+            if (forgotLink) {
+                forgotLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showForgotPassword();
+                });
+            }
+            
+            // Back to login links (multiple)
+            const backToLoginLinks = document.querySelectorAll('a[onclick="showLogin()"]');
+            backToLoginLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showLogin();
+                });
+            });
 
-    function checkWin(player) {
-      const winConditions = [
-        [0,1,2], [3,4,5], [6,7,8],
-        [0,3,6], [1,4,7], [2,5,8],
-        [0,4,8], [2,4,6]
-      ];
-      return winConditions.some(combo =>
-        combo.every(i => cells[i] === player)
-      );
-    }
+            // Initialize with login form
+            showLogin();
+        });
 
-    function endGame(message) {
-      gameOver = true;
-      statusText.textContent = message;
-      playAgainButton.style.display = "inline-block";
-      gamesPlayed++;
-      gamesPlayedDisplay.textContent = gamesPlayed;
-    }
+        // Check for existing session
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Get stored activity time
+                const storedTime = parseInt(localStorage.getItem('lastActivityTime') || '0');
+                const currentTime = Date.now();
+                
+                // Only clear session if user is inactive and we have a stored time
+                if (storedTime > 0 && currentTime - storedTime > INACTIVITY_TIMEOUT) {
+                    auth.signOut().then(() => {
+                        localStorage.removeItem('lastActivityTime');
+                        showLogin();
+                        document.getElementById('loginError').textContent = "Session expired due to inactivity. Please login again.";
+                    });
+                } else {
+                    // Update activity time if session is still valid
+                    updateLastActivity();
+                }
+            } else {
+                // If not authenticated, ensure we're on the login page
+                if (window.location.pathname.includes('access.html')) {
+                    window.location.href = "index.html";
+                }
+            }
+        });
 
-    function updateScore() {
-      xWinsDisplay.textContent = xWins;
-      oWinsDisplay.textContent = oWins;
-      drawsDisplay.textContent = draws;
-    }
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            // Initialize last activity time
+            const storedTime = parseInt(localStorage.getItem('lastActivityTime') || '0');
+            if (storedTime > 0) {
+                lastActivityTime = storedTime;
+            } else {
+                lastActivityTime = Date.now();
+                localStorage.setItem('lastActivityTime', lastActivityTime);
+            }
+            
+            // Check Firebase authentication state
+            auth.onAuthStateChanged((user) => {
+                if (!user) {
+                    // If not authenticated, ensure we're on the login page
+                    if (window.location.pathname.includes('access.html')) {
+                        window.location.href = "index.html";
+                    }
+                }
+            });
+        });
 
-    playAgainButton.addEventListener("click", initGame);
-  </script>
+        // Handle browser/tab close
+        window.addEventListener('beforeunload', () => {
+            // Store the current activity time
+            localStorage.setItem('lastActivityTime', Date.now());
+        });
+
+        // Login form submission
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            const errorDiv = document.getElementById('loginError');
+            errorDiv.textContent = "";
+
+            if (!email || !password) {
+                errorDiv.textContent = "Please fill in all fields!";
+                return;
+            }
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                // Store login time
+                updateLastActivity();
+                window.location.replace("access.html");
+            } catch (error) {
+                let errorMessage = "Login failed!";
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        errorMessage = "Invalid email format!";
+                        break;
+                    case 'auth/user-not-found':
+                        errorMessage = "No account found with this email!";
+                        break;
+                    case 'auth/wrong-password':
+                        errorMessage = "Incorrect password!";
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = "Too many failed attempts. Try again later!";
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = "Network error. Please check your connection!";
+                        break;
+                }
+                errorDiv.textContent = errorMessage;
+            }
+        });
+
+        // Register form submission
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('registerUsername').value.trim();
+            const password = document.getElementById('registerPassword').value.trim();
+            const errorDiv = document.getElementById('registerError');
+            errorDiv.textContent = "";
+
+            if (!email || !password) {
+                errorDiv.textContent = "Please fill in all fields!";
+                return;
+            }
+
+            if (password.length < 8) {
+                errorDiv.textContent = "Password must be at least 8 characters!";
+                return;
+            }
+
+            // Password strength validation
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasNumbers = /\d/.test(password);
+            const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+            if (!hasUpperCase || !hasLowerCase || !hasNumbers || !hasSpecialChar) {
+                errorDiv.textContent = "Password must contain uppercase, lowercase, numbers, and special characters!";
+                return;
+            }
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                // Don't store credentials
+                setTimeout(() => {
+                    showLogin();
+                }, 1500);
+            } catch (error) {
+                let errorMessage = "Registration failed!";
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = "Email already in use!";
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = "Invalid email format!";
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = "Password should be at least 8 characters with uppercase, lowercase, numbers, and special characters!";
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = "Network error. Please check your connection!";
+                        break;
+                }
+                errorDiv.textContent = errorMessage;
+            }
+        });
+
+        // Forgot password form submission
+        forgotForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('forgotUsername').value.trim();
+            const errorDiv = document.getElementById('forgotError');
+            errorDiv.textContent = "";
+
+            if (!email) {
+                errorDiv.textContent = "Please enter your email!";
+                return;
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                setTimeout(() => {
+                    showLogin();
+                }, 2000);
+            } catch (error) {
+                let errorMessage = "Failed to send reset email!";
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        errorMessage = "Invalid email format!";
+                        break;
+                    case 'auth/user-not-found':
+                        errorMessage = "No account found with this email!";
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = "Network error. Please check your connection!";
+                        break;
+                }
+                errorDiv.textContent = errorMessage;
+            }
+        });
+
+        // Eagle and Fire Animation
+        const eagle = document.querySelector('.eagle');
+        const fire = document.querySelector('.fire');
+        
+        setInterval(() => {
+            const randomY = Math.random() * window.innerHeight;
+            const randomX = Math.random() * window.innerWidth;
+            fire.style.display = 'block';
+            fire.style.left = `${randomX}px`;
+            fire.style.top = `${randomY}px`;
+            setTimeout(() => {
+                fire.style.display = 'none';
+            }, 1000);
+        }, 2000);
+
+        // Create particles
+        const particlesContainer = document.querySelector('.particles');
+        for (let i = 0; i < 100; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.opacity = Math.random() * 0.5 + 0.5;
+            particle.style.width = Math.random() * 3 + 1 + 'px';
+            particle.style.height = particle.style.width;
+            particlesContainer.appendChild(particle);
+        }
+
+        // Add mouse move effect
+        document.addEventListener('mousemove', (e) => {
+            const container = document.querySelector('.container');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            container.style.transform = `perspective(1000px) rotateX(${(y - 0.5) * 5}deg) rotateY(${(x - 0.5) * 5}deg)`;
+        });
+
+        // Optimize mobile performance
+        document.addEventListener('DOMContentLoaded', () => {
+            // Disable scroll on input focus
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    document.body.style.overflow = 'hidden';
+                });
+                input.addEventListener('blur', () => {
+                    document.body.style.overflow = '';
+                });
+            });
+
+            // Optimize touch events
+            const container = document.querySelector('.container');
+            let touchStartX = 0;
+            let touchStartY = 0;
+
+            container.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+
+            container.addEventListener('touchmove', (e) => {
+                e.preventDefault(); // Prevent default scrolling
+            }, { passive: false });
+
+            // Optimize animations for mobile
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefersReducedMotion) {
+                document.body.classList.add('reduced-motion');
+            }
+
+            // Handle virtual keyboard
+            window.addEventListener('resize', () => {
+                if (document.activeElement.tagName === 'INPUT') {
+                    document.activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+
+            // Optimize form submission
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const submitButton = form.querySelector('input[type="submit"]');
+                    if (submitButton) {
+                        submitButton.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            submitButton.style.transform = 'scale(1)';
+                        }, 100);
+                    }
+                });
+            });
+        });
+
+        // Add this at the beginning of your script
+        const lockScreen = document.getElementById('lockScreen');
+        const countdownElement = document.getElementById('countdown');
+
+        // Set the target date (April 25, 2025)
+        const targetDate = new Date('2025-04-25T00:00:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance <= 0) {
+                // If countdown is over, hide the lock screen
+                lockScreen.classList.add('hidden');
+                return;
+            }
+
+            // Calculate time units
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Update the countdown display
+            countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+            // Update every second
+            setTimeout(updateCountdown, 1000);
+        }
+
+        // Start the countdown
+        updateCountdown();
+
+        // Check if we should show the lock screen
+        if (new Date().getTime() < targetDate) {
+            lockScreen.classList.remove('hidden');
+        } else {
+            lockScreen.classList.add('hidden');
+        }
+    </script>
 </body>
 </html>
