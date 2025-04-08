@@ -551,15 +551,101 @@
             opacity: 0 !important;
             pointer-events: none !important;
         }
+        .thumbnail-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .thumbnail {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .thumbnail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(0);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 6px;
+        }
+        .thumbnail:hover {
+            transform: scale(1.15) translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+        .thumbnail:hover::before {
+            transform: scale(1);
+        }
+        .thumbnail.active {
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+        }
+        .thumbnail.active::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1.5em;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        @media screen and (max-width: 480px) {
+            .thumbnail {
+                width: 50px;
+                height: 50px;
+            }
+            .thumbnail:hover {
+                transform: scale(1.1) translateY(-3px);
+            }
+        }
+        .fullscreen-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10000;
+        }
+        .fullscreen-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
     </style>
 </head>
 <body> 
     <div class="lock-screen" id="lockScreen">
+        <button class="fullscreen-btn" id="fullscreenBtn">⛶</button>
         <div class="lock-container">
             <div class="lock-icon">🔒</div>
             <div class="timer" id="countdown"></div>
             <div class="date">Until April 25, 2025</div>
             <div class="message">This site will be available after the countdown ends. Please check back later.</div>
+            <div class="thumbnail-container">
+                <div class="thumbnail" style="background: linear-gradient(45deg, #ffd700, #ff0000);" data-bg="linear-gradient(45deg, #ffd700, #ff0000)"></div>
+                <div class="thumbnail" style="background: linear-gradient(45deg, #00ff00, #0000ff);" data-bg="linear-gradient(45deg, #00ff00, #0000ff)"></div>
+                <div class="thumbnail" style="background: linear-gradient(45deg, #ff00ff, #00ffff);" data-bg="linear-gradient(45deg, #ff00ff, #00ffff)"></div>
+                <div class="thumbnail" style="background: linear-gradient(45deg, #ffa500, #ff4500);" data-bg="linear-gradient(45deg, #ffa500, #ff4500)"></div>
+                <div class="thumbnail" style="background: linear-gradient(45deg, #800080, #4b0082);" data-bg="linear-gradient(45deg, #800080, #4b0082)"></div>
+            </div>
         </div>
     </div>
 
@@ -676,6 +762,55 @@
     </div>
 
     <script type="module">
+        // Add this at the beginning of your script
+        // Disable right-click and keyboard shortcuts
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            return false;
+        });
+
+        // Disable keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+            if (
+                e.key === 'F12' ||
+                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) ||
+                (e.ctrlKey && (e.key === 'U' || e.key === 'u'))
+            ) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // Prevent opening developer tools
+        setInterval(() => {
+            const check = document.getElementById('check');
+            if (check) {
+                check.remove();
+            } else {
+                const div = document.createElement('div');
+                div.id = 'check';
+                Object.defineProperty(div, 'id', {
+                    get: function() {
+                        window.location.href = 'about:blank';
+                    }
+                });
+                console.log(div);
+            }
+        }, 1000);
+
+        // Prevent viewing source code
+        Object.defineProperty(document, 'documentElement', {
+            get: function() {
+                return null;
+            }
+        });
+
+        // Prevent viewing source through view-source: protocol
+        if (window.location.protocol === 'view-source:') {
+            window.location.href = 'about:blank';
+        }
+
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 
@@ -1142,6 +1277,57 @@
         } else {
             lockScreen.classList.add('hidden');
         }
+
+        // Add this after your existing script
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        let isFullscreen = false;
+
+        // Handle fullscreen toggle
+        fullscreenBtn.addEventListener('click', () => {
+            if (!isFullscreen) {
+                if (lockScreen.requestFullscreen) {
+                    lockScreen.requestFullscreen();
+                } else if (lockScreen.webkitRequestFullscreen) {
+                    lockScreen.webkitRequestFullscreen();
+                } else if (lockScreen.msRequestFullscreen) {
+                    lockScreen.msRequestFullscreen();
+                }
+                isFullscreen = true;
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+                isFullscreen = false;
+            }
+        });
+
+        // Handle thumbnail clicks
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener('click', () => {
+                // Remove active class from all thumbnails
+                thumbnails.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked thumbnail
+                thumbnail.classList.add('active');
+                // Update background
+                lockScreen.style.background = thumbnail.dataset.bg;
+            });
+        });
+
+        // Handle fullscreen change
+        document.addEventListener('fullscreenchange', () => {
+            isFullscreen = !!document.fullscreenElement;
+        });
+        document.addEventListener('webkitfullscreenchange', () => {
+            isFullscreen = !!document.webkitFullscreenElement;
+        });
+        document.addEventListener('msfullscreenchange', () => {
+            isFullscreen = !!document.msFullscreenElement;
+        });
     </script>
 </body>
 </html>
